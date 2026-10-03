@@ -152,11 +152,11 @@ namespace MiliraKeyComponents
             // 所以「能把参数填进 {0}」这件事上两种写法是一样的；
             // 但 Formatted 还会多做一步当前语言的后处理（Find.ActiveLanguageWorker.PostProcessed），
             // 而且参数填不进去时它只记一条错误日志、不会抛异常，因此两者并不完全等价。
-            // 写法上用 .NET 自带的 string.Format：它会把文本里的 {0} 换成第 0 个参数。
-            //
-            // 说明：这个 args 参数目前没有任何调用方会用到 —— 本文件 6 个调用点都不传参数，
-            // 唯一带 {0} 的那一处（第 66 行）走的是 Formatted，因为那里是链式调用、接着往下写更顺手。
-            // 留着它是为了以后真需要「先取翻译、再自己填参数」时直接能用，不必再改方法签名。
+            // 说明：这个 args 参数目前没有任何调用方会用到 ——
+            // 本文件里所有调用点都不传参数（唯一带 {0} 的那处设置界面文案走的是 Formatted，
+            // 因为那里是链式调用、接着往下写更顺手）。
+            // 留着它是为了以后真需要「先取翻译、再自己填参数」时直接能用，不必再改方法签名
+            //（也正因为如此，这里不写死调用点个数和行号 —— 那种数字改几次代码就过期了）。
             return (args == null || args.Length == 0) ? text : string.Format(text, args);
         }
     }
@@ -343,6 +343,12 @@ namespace MiliraKeyComponents
                 // ingredients[i].GetBaseCount() 和 workAmount 的，读到的就是当前值。
                 // 所以上面改完，下一帧画出来就已经是新数字了，不需要额外通知谁。
                 recipe.ClearCachedData();
+
+                // 记一笔：这一条是**真正改到过**的配方。
+                // 少了这一句，LastAppliedCount 会永远是 0，
+                // 启动日志就会在「其实改成功了」的情况下报「一个配方都没找到」——
+                // 那比不打日志还糟，排查问题的人会被带到沟里去。
+                applied++;
             }
 
             // 把这次的结果记下来，供 MKC_Bootstrap 在启动时打一条日志用。
