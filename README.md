@@ -1,5 +1,7 @@
 # 米莉拉：关键物品制作补丁 / Milira: Key Component Patch
 
+> **📦 下载**：[最新版本（Release）](https://github.com/1579486875/MiliraKeyComponents/releases/latest) —— 下载 zip，解压后放进 `Mods\` 目录，排在米莉拉天空精灵之后。
+
 把米莉拉系模组里**只能靠兑换、贸易或任务获得的关键件**接回生产链。
 
 **软依赖设计：装多少，解锁多少。**
@@ -274,7 +276,7 @@ public IEnumerable<IntVec3> IngredientStackCells => GenAdj.CellsOccupiedBy(this)
 | **只装米莉拉本体（无米帝）** | ✅ Base 组 8 条配方的 23 个引用**全部**来自本体无条件主模块 + 原版 |
 | **本体 + 米帝，但无 Odyssey / Ideology / Anomaly** | ✅ Imperium 组引用的 18 个 Def 全在米帝**无条件主模块**，不受条件子模块影响 |
 | **未安装 Biotech DLC** | ⚠️→✅ 6 种职阶许可定义在本体的 `1.6\Mods\Biotech\` 条件模块里。本体虽在 `About.xml` 强制依赖 Biotech，但这 6 条配方仍显式标注 `MayRequire="Ludeon.RimWorld.Biotech"` 兜底：缺失时**静默跳过**，而不是抛红字 |
-| **旧版本模组目录/标识残留** | ✅ 已扫描：全库只有一个 `gnh.cn.cys.milirakeycomponents`。2026-10-01 按作者签名（GNH-CN-CYS）把 `taml.` / `TAML_` 统一改为 `gnh.cn.cys.` / `GNH_`，旧目录已清除，不会重复定义；改前副本存于 `E:\TAML\_scratch\before-signature-rename\` |
+| **旧版本模组目录/标识残留** | ✅ 已扫描：全库只有一个 `gnh.cn.cys.milirakeycomponents`。2026-10-01 按作者签名（GNH-CN-CYS）把 `taml.` / `TAML_` 统一改为 `gnh.cn.cys.` / `GNH_`，旧目录已清除，不会重复定义；改前的副本已在本地留存备份 |
 | **加载顺序被排到本体/米帝之前** | ✅ `About.xml` 已声明 `loadAfter`；且 RimWorld 的 Def 加载是两阶段（先收集再 ResolveReferences），跨模组引用本身不依赖顺序 |
 | **配方之间形成循环依赖** | ✅ 唯一的产物间引用是「卡冈都亚核心 ← 灵能核心」，单向无环，不存在自锁 |
 | **经济套利（造出来卖给商人）** | ✅ 11 条配方的材料成本全部 **≥ 产物市场价格**，而商人收购价只有市价的 5~6 成 —— 卖了必亏 |
@@ -293,7 +295,7 @@ public IEnumerable<IntVec3> IngredientStackCells => GenAdj.CellsOccupiedBy(this)
 ## 七、安装
 
 1. 把整个 `米莉拉关键物品制作补丁-MiliraKeyComponentPatch` 文件夹放进
-   `…\RimWorld\Mods\`（本机路径：`D:\steam\steamapps\common\RimWorld\Mods\`）
+   `…\RimWorld\Mods\`
 2. 在模组列表里启用它，位置放在「米莉拉天空精灵」**之后**
    （若装了米帝，也放在「米莉拉帝国」之后）
 3. 旧存档可直接加装，无需新开档
@@ -373,7 +375,7 @@ public IEnumerable<IntVec3> IngredientStackCells => GenAdj.CellsOccupiedBy(this)
 
 ```powershell
 dotnet build "Source\MiliraKeyComponents.csproj" -c Release `
-    -p:RimWorldDir="D:\steam\steamapps\common\RimWorld"
+    -p:RimWorldDir="<你的 RimWorld 安装目录>"
 ```
 
 产物直接输出到 `Common\Assemblies\MiliraKeyComponents.dll`（仓库内已附编译好的 dll）。
