@@ -251,6 +251,34 @@ namespace MiliraKeyComponents
             if (recipes.Count == 0)
             {
                 LastAppliedCount = 0;
+
+                // 一个都没找到时，把「为什么」一次问清楚，免得来回猜。
+                // 这一段只在出问题时才会执行，正常游戏不会看到它。
+                try
+                {
+                    int total = DefDatabase<RecipeDef>.AllDefsListForReading.Count;
+                    int byPrefix = 0;
+                    string sample = "";
+                    foreach (RecipeDef r in DefDatabase<RecipeDef>.AllDefsListForReading)
+                    {
+                        if (r.defName == null || !r.defName.StartsWith(RecipePrefix)) continue;
+                        byPrefix++;
+                        if (sample.Length == 0)
+                        {
+                            string pid = r.modContentPack == null ? "<null>" : r.modContentPack.PackageId;
+                            sample = r.defName + " (来源模组=" + pid + ")";
+                        }
+                    }
+                    Verse.Log.Warning("[MKC] diag: RecipeDef 总数=" + total
+                        + "，以 GNH_Recipe_ 开头的=" + byPrefix
+                        + "，本模组期望的 packageId=" + OwnPackageId
+                        + (sample.Length > 0 ? "；样例：" + sample : "；一个前缀匹配的配方都没有"));
+                }
+                catch (System.Exception ex)
+                {
+                    Verse.Log.Warning("[MKC] diag failed: " + ex.Message);
+                }
+
                 return; // 一个都没找到 —— 通常是模组被禁用了，或者配方表（Def）还没读进来。
                         // 这种时候安静退出就好：没东西可改，也不必在这里刷日志；
                         // 启动的那一次由 MKC_Bootstrap 统一报一声（见本文件末尾）。

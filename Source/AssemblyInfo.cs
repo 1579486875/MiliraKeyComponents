@@ -6,5 +6,5 @@ using System.Reflection;
 // modVersion 保持一致，方便日后排查问题时一眼看出加载的是哪个版本。
 [assembly: AssemblyTitle("MiliraKeyComponents")]
 [assembly: AssemblyProduct("米莉拉：关键件制造 / Milira: Key Component Crafting")]
-[assembly: AssemblyVersion("1.6.3.0")]
-[assembly: AssemblyFileVersion("1.6.3.0")]
+[assembly: AssemblyVersion("1.6.4.0")]
+[assembly: AssemblyFileVersion("1.6.4.0")]
