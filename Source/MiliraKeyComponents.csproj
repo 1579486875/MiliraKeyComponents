@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ════════════════════════════════════════════════════════════════════════
+   米莉拉：关键物品制作补丁 / Milira: Key Component Crafting Patch
+   编译配置（模组设置：简单模式）
+  ════════════════════════════════════════════════════════════════════════
+
+   目标框架：net48
+     RimWorld 1.6 运行在 Unity 的 Mono（.NET Framework 4.8 兼容层）上，
+     必须编译成 net48；用 .NET Core / 5+ 目标框架会导致游戏加载程序集失败。
+
+   输出路径：..\Common\Assemblies\
+     编译产物直接落到模组的 Common\Assemblies\ 目录
+     （该目录已列入 LoadFolders.xml 的 Common 项，否则程序集不会被加载）：
+         米莉拉关键物品制作补丁-MiliraKeyComponentPatch\
+         ├── Common\Assemblies\MiliraKeyComponents.dll   ← 编译产物
+         └── Source\MiliraKeyComponents.csproj           ← 本文件
+
+   本程序集【不依赖 Harmony】：
+     它只在启动阶段与设置变更时直接改写 DefDatabase 里的 RecipeDef 数值，
+     不做任何方法级补丁，因此不需要 brrainz.harmony。
+
+   编译（命令行）：
+     dotnet build "Source\MiliraKeyComponents.csproj" -c Release `
+         -p:RimWorldDir="D:\steam\steamapps\common\RimWorld"
+
+   注意：所有游戏程序集都标了 <Private>false</Private>——
+         编译时需要，但不要复制到输出目录（运行时由 RimWorld 自己提供）。
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>MiliraKeyComponents</AssemblyName>
+    <Version>1.6.3</Version>
+    <RootNamespace>MiliraKeyComponents</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+
+    <!-- 产物直接落到模组的 Assemblies 文件夹，不要多套一层 net48\ -->
+    <OutputPath>..\Common\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <Deterministic>true</Deterministic>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <!-- ── 路径探测：可被命令行上的同名属性覆盖 ── -->
+  <PropertyGroup>
+    <RimWorldDir Condition="'$(RimWorldDir)' == ''">D:\steam\steamapps\common\RimWorld</RimWorldDir>
+    <ManagedDir>$(RimWorldDir)\RimWorldWin64_Data\Managed</ManagedDir>
+  </PropertyGroup>
+
+  <!-- 路径不存在时给中文报错，而不是让编译器抛一句难懂的找不到引用 -->
+  <Target Name="MKCValidatePaths" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="!Exists('$(ManagedDir)\Assembly-CSharp.dll')"
+           Text="找不到 RimWorld 程序集：$(ManagedDir)\Assembly-CSharp.dll。请用 -p:RimWorldDir=&quot;你的 RimWorld 安装目录&quot; 指定正确路径。" />
+  </Target>
+
+  <ItemGroup>
+    <!-- RimWorld 本体 -->
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(ManagedDir)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+
+    <!-- Unity：Rect / Mathf 在 CoreModule，IMGUI（Listing_Standard）在 IMGUIModule -->
+    <Reference Include="UnityEngine">
+      <HintPath>$(ManagedDir)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(ManagedDir)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(ManagedDir)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

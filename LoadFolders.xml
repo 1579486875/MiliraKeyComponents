@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<loadFolders>
+  <v1.6>
+    <!-- 基础部分：只依赖「米莉拉天空精灵」本体，任何情况下都加载。
+         注意：这里刻意不使用 <li>.</li> 表示根目录 —— 反编译 RimWorld 的
+         ModContentPack.InitLoadFolders 可知，只有 "/" 或 "\" 才会被解析成
+         根目录("")，写 "." 会得到 "…\ModName\." 这种非规范路径，
+         可能导致该目录下的 Languages 不被正确合并。用明确的子文件夹最稳。 -->
+    <li>Common</li>
+
+    <!-- 米帝扩展配方：仅在装了「米莉拉派系：米莉拉帝国」时加载。
+         这样没装米帝的玩家不会看到引用不到 Def 的配方与翻译。 -->
+    <li IfModActive="Ariandel.MiliraImperium">MiliraImperium</li>
+  </v1.6>
+</loadFolders>

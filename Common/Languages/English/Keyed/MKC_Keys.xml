@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <MKC_SettingsCategory>Milira: Key Component Crafting</MKC_SettingsCategory>
+  <MKC_SimpleMode>Simple Mode</MKC_SimpleMode>
+  <MKC_SimpleModeDesc>Halves ingredient requirements and drops work amount to 20%. Off by default (keeps the balance matched to the original mod's economy). Takes effect immediately, no restart needed.</MKC_SimpleModeDesc>
+  <MKC_CurrentEffect>Current: {0}</MKC_CurrentEffect>
+  <MKC_On>Simple Mode enabled (half ingredients, 20% work)</MKC_On>
+  <MKC_Off>Balanced (author's default tuning)</MKC_Off>
+</LanguageData>

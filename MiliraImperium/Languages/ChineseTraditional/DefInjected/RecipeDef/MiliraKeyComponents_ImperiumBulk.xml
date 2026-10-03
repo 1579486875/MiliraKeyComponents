@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <GNH_Recipe_PsionicCore_Bulk.label>織造靈能核心 x5</GNH_Recipe_PsionicCore_Bulk.label>
+  <GNH_Recipe_PsionicCore_Bulk.description>在引力織造器上一次性織造五枚靈能核心。</GNH_Recipe_PsionicCore_Bulk.description>
+  <GNH_Recipe_PsionicCore_Bulk.jobString>正在批量織造靈能核心。</GNH_Recipe_PsionicCore_Bulk.jobString>
+
+  <GNH_Recipe_GargantuaCore_Bulk.label>織造卡岡都亞核心 x3</GNH_Recipe_GargantuaCore_Bulk.label>
+  <GNH_Recipe_GargantuaCore_Bulk.description>在引力織造器上一次性織造三枚卡岡都亞核心。</GNH_Recipe_GargantuaCore_Bulk.description>
+  <GNH_Recipe_GargantuaCore_Bulk.jobString>正在批量織造卡岡都亞核心。</GNH_Recipe_GargantuaCore_Bulk.jobString>
+
+  <GNH_Recipe_GoldenMiliraFeather_Bulk.label>織造金色米莉拉之羽 x5</GNH_Recipe_GoldenMiliraFeather_Bulk.label>
+  <GNH_Recipe_GoldenMiliraFeather_Bulk.description>在引力織造器上一次性織造五枚金色米莉拉之羽。</GNH_Recipe_GoldenMiliraFeather_Bulk.description>
+  <GNH_Recipe_GoldenMiliraFeather_Bulk.jobString>正在批量織造金色米莉拉之羽。</GNH_Recipe_GoldenMiliraFeather_Bulk.jobString>
+</LanguageData>

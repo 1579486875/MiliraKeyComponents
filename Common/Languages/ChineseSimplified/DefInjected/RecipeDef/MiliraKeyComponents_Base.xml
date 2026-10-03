@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <GNH_Recipe_ResonatorCore.label>打印谐振子</GNH_Recipe_ResonatorCore.label>
+  <GNH_Recipe_ResonatorCore.description>在米莉拉通用工作台上打印一枚谐振子：以日凌晶充当谐振介质，再配上工业零部件完成精密装配。&#xA;谐振子本来是谐振仪的核心耗材，但米莉拉本体还没把谐振仪放出来，所以这件东西眼下只是一笔值钱的储备——留着，或者卖给商队。</GNH_Recipe_ResonatorCore.description>
+  <GNH_Recipe_ResonatorCore.jobString>正在打印谐振子。</GNH_Recipe_ResonatorCore.jobString>
+
+  <GNH_Recipe_NamePlate_Pawn.label>刻蚀职阶许可：士兵</GNH_Recipe_NamePlate_Pawn.label>
+  <GNH_Recipe_NamePlate_Pawn.description>为米莉安刻蚀一枚“士兵”职阶的身份识别芯片：以日凌晶充当线路介质，工业零部件作为承载基板。</GNH_Recipe_NamePlate_Pawn.description>
+  <GNH_Recipe_NamePlate_Pawn.jobString>正在刻蚀“士兵”职阶许可。</GNH_Recipe_NamePlate_Pawn.jobString>
+
+  <GNH_Recipe_NamePlate_Knight.label>刻蚀职阶许可：骑士</GNH_Recipe_NamePlate_Knight.label>
+  <GNH_Recipe_NamePlate_Knight.description>为米莉安刻蚀一枚“骑士”职阶的身份识别芯片。骑士是武力职阶，线路更密，承载结构也更强。</GNH_Recipe_NamePlate_Knight.description>
+  <GNH_Recipe_NamePlate_Knight.jobString>正在刻蚀“骑士”职阶许可。</GNH_Recipe_NamePlate_Knight.jobString>
+
+  <GNH_Recipe_NamePlate_Bishop.label>刻蚀职阶许可：主教</GNH_Recipe_NamePlate_Bishop.label>
+  <GNH_Recipe_NamePlate_Bishop.description>为米莉安刻蚀一枚“主教”职阶的身份识别芯片。主教是灵能职阶，线路本身要承担更多灵能负载，因此更吃日凌晶。</GNH_Recipe_NamePlate_Bishop.description>
+  <GNH_Recipe_NamePlate_Bishop.jobString>正在刻蚀“主教”职阶许可。</GNH_Recipe_NamePlate_Bishop.jobString>
+
+  <GNH_Recipe_NamePlate_Rook.label>刻蚀职阶许可：战车</GNH_Recipe_NamePlate_Rook.label>
+  <GNH_Recipe_NamePlate_Rook.description>为米莉安刻蚀一枚“战车”职阶的身份识别芯片。战车是重装职阶，芯片线路最密、承载件也最多。</GNH_Recipe_NamePlate_Rook.description>
+  <GNH_Recipe_NamePlate_Rook.jobString>正在刻蚀“战车”职阶许可。</GNH_Recipe_NamePlate_Rook.jobString>
+
+  <GNH_Recipe_NamePlate_King.label>刻蚀职阶许可：国王</GNH_Recipe_NamePlate_King.label>
+  <GNH_Recipe_NamePlate_King.description>在太阳熔炉中为米莉安刻蚀一枚“国王”职阶的身份识别芯片。国王的权能侧重军权与统御，因此芯片以锻钢与黄金为骨。</GNH_Recipe_NamePlate_King.description>
+  <GNH_Recipe_NamePlate_King.jobString>正在刻蚀“国王”职阶许可。</GNH_Recipe_NamePlate_King.jobString>
+
+  <GNH_Recipe_NamePlate_Queen.label>刻蚀职阶许可：王后</GNH_Recipe_NamePlate_Queen.label>
+  <GNH_Recipe_NamePlate_Queen.description>在太阳熔炉中为米莉安刻蚀一枚“王后”职阶的身份识别芯片。王后的权能侧重神权与灵能，因此芯片以晶石与翡翠为骨。</GNH_Recipe_NamePlate_Queen.description>
+  <GNH_Recipe_NamePlate_Queen.jobString>正在刻蚀“王后”职阶许可。</GNH_Recipe_NamePlate_Queen.jobString>
+
+  <GNH_Recipe_FurnaceCoreModel.label>铸造太阳熔炉炉心模型</GNH_Recipe_FurnaceCoreModel.label>
+  <GNH_Recipe_FurnaceCoreModel.description>在太阳熔炉中铸造一枚按比例缩小的炉心模型——只要研究它，就能掌握太阳熔炉的建造方法。</GNH_Recipe_FurnaceCoreModel.description>
+  <GNH_Recipe_FurnaceCoreModel.jobString>正在铸造太阳熔炉炉心模型。</GNH_Recipe_FurnaceCoreModel.jobString>
+</LanguageData>

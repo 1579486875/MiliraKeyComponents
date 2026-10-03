@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <GNH_Recipe_ResonatorCore.label>Print Resonator Core</GNH_Recipe_ResonatorCore.label>
+  <GNH_Recipe_ResonatorCore.description>Print a resonator core on the Milira universal workbench, using a solar crystal as the resonance medium and an industrial component for the precision assembly.&#xA;The resonator rig these cores are meant to feed has not been released by the Milira base mod yet, so for now a core is just a valuable piece of stock - keep it, or sell it to a trader.</GNH_Recipe_ResonatorCore.description>
+  <GNH_Recipe_ResonatorCore.jobString>Printing a resonator core.</GNH_Recipe_ResonatorCore.jobString>
+
+  <GNH_Recipe_NamePlate_Pawn.label>Etch Class Permit: Pawn</GNH_Recipe_NamePlate_Pawn.label>
+  <GNH_Recipe_NamePlate_Pawn.description>Etch a Pawn-class identity chip for the Milian, using a solar crystal as the circuit medium and an industrial component as the carrier board.</GNH_Recipe_NamePlate_Pawn.description>
+  <GNH_Recipe_NamePlate_Pawn.jobString>Etching a Pawn-class permit.</GNH_Recipe_NamePlate_Pawn.jobString>
+
+  <GNH_Recipe_NamePlate_Knight.label>Etch Class Permit: Knight</GNH_Recipe_NamePlate_Knight.label>
+  <GNH_Recipe_NamePlate_Knight.description>Etch a Knight-class identity chip for the Milian. As a martial class, its circuitry is denser and its carrier structure stronger.</GNH_Recipe_NamePlate_Knight.description>
+  <GNH_Recipe_NamePlate_Knight.jobString>Etching a Knight-class permit.</GNH_Recipe_NamePlate_Knight.jobString>
+
+  <GNH_Recipe_NamePlate_Bishop.label>Etch Class Permit: Bishop</GNH_Recipe_NamePlate_Bishop.label>
+  <GNH_Recipe_NamePlate_Bishop.description>Etch a Bishop-class identity chip for the Milian. As a psionic class, the circuitry itself carries a heavier psionic load, and so it consumes more solar crystal.</GNH_Recipe_NamePlate_Bishop.description>
+  <GNH_Recipe_NamePlate_Bishop.jobString>Etching a Bishop-class permit.</GNH_Recipe_NamePlate_Bishop.jobString>
+
+  <GNH_Recipe_NamePlate_Rook.label>Etch Class Permit: Rook</GNH_Recipe_NamePlate_Rook.label>
+  <GNH_Recipe_NamePlate_Rook.description>Etch a Rook-class identity chip for the Milian. As a heavy class, its circuitry is the densest and needs the most carrier components.</GNH_Recipe_NamePlate_Rook.description>
+  <GNH_Recipe_NamePlate_Rook.jobString>Etching a Rook-class permit.</GNH_Recipe_NamePlate_Rook.jobString>
+
+  <GNH_Recipe_NamePlate_King.label>Etch Class Permit: King</GNH_Recipe_NamePlate_King.label>
+  <GNH_Recipe_NamePlate_King.description>Etch a King-class identity chip in the solar furnace. King-class authority leans on military command, and so its chip is built around forged steel and gold.</GNH_Recipe_NamePlate_King.description>
+  <GNH_Recipe_NamePlate_King.jobString>Etching a King-class permit.</GNH_Recipe_NamePlate_King.jobString>
+
+  <GNH_Recipe_NamePlate_Queen.label>Etch Class Permit: Queen</GNH_Recipe_NamePlate_Queen.label>
+  <GNH_Recipe_NamePlate_Queen.description>Etch a Queen-class identity chip in the solar furnace. Queen-class authority leans on divine rite and psionics, and so its chip is built around crystals and jade.</GNH_Recipe_NamePlate_Queen.description>
+  <GNH_Recipe_NamePlate_Queen.jobString>Etching a Queen-class permit.</GNH_Recipe_NamePlate_Queen.jobString>
+
+  <GNH_Recipe_FurnaceCoreModel.label>Model Sunblast Furnace Core</GNH_Recipe_FurnaceCoreModel.label>
+  <GNH_Recipe_FurnaceCoreModel.description>Cast a scale model of the sunblast furnace core in the solar furnace itself — the study piece from which the furnace's construction can be learned.</GNH_Recipe_FurnaceCoreModel.description>
+  <GNH_Recipe_FurnaceCoreModel.jobString>Modelling a sunblast furnace core.</GNH_Recipe_FurnaceCoreModel.jobString>
+</LanguageData>

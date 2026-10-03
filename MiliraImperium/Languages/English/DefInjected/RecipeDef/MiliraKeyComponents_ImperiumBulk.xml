@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <GNH_Recipe_PsionicCore_Bulk.label>Weave Psionic Core x5</GNH_Recipe_PsionicCore_Bulk.label>
+  <GNH_Recipe_PsionicCore_Bulk.description>Weave five Psionic Cores in the gravity loom in one batch.</GNH_Recipe_PsionicCore_Bulk.description>
+  <GNH_Recipe_PsionicCore_Bulk.jobString>Weaving Psionic Cores in bulk.</GNH_Recipe_PsionicCore_Bulk.jobString>
+
+  <GNH_Recipe_GargantuaCore_Bulk.label>Weave Gargantua Core x3</GNH_Recipe_GargantuaCore_Bulk.label>
+  <GNH_Recipe_GargantuaCore_Bulk.description>Weave three Gargantua Cores in the gravity loom in one batch.</GNH_Recipe_GargantuaCore_Bulk.description>
+  <GNH_Recipe_GargantuaCore_Bulk.jobString>Weaving Gargantua Cores in bulk.</GNH_Recipe_GargantuaCore_Bulk.jobString>
+
+  <GNH_Recipe_GoldenMiliraFeather_Bulk.label>Weave Golden Milira Feather x5</GNH_Recipe_GoldenMiliraFeather_Bulk.label>
+  <GNH_Recipe_GoldenMiliraFeather_Bulk.description>Weave five Golden Milira Feathers in the gravity loom in one batch.</GNH_Recipe_GoldenMiliraFeather_Bulk.description>
+  <GNH_Recipe_GoldenMiliraFeather_Bulk.jobString>Weaving Golden Milira Feathers in bulk.</GNH_Recipe_GoldenMiliraFeather_Bulk.jobString>
+</LanguageData>

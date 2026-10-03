@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ===============================================================
+       米莉拉：关键件制造 —— 基础部分（只需要「米莉拉天空精灵」本体）
+       本文件的八条配方只使用本模组与本体、原版的 Def，
+       因此无论有没有装米莉拉帝国拓展都能正常使用。
+
+       另一部分（灵能核心 / 卡冈都亚核心 / 金色米莉拉之羽）放在
+       MiliraImperium\ 文件夹，由 LoadFolders.xml 判断是否加载。
+
+       ── 配方按生产力分层 ──────────────────────────────────────
+       物品                     市价   工作台            台面  材料种类
+       谐振子                   100    米莉拉通用工作台   2×1   2
+       职阶许可：士兵            60    米莉拉通用工作台   2×1   2
+       职阶许可：骑士           120    米莉拉通用工作台   2×1   2
+       职阶许可：主教           120    米莉拉通用工作台   2×1   2
+       职阶许可：战车           200    米莉拉通用工作台   2×1   2
+       职阶许可：国王          1200    太阳熔炉          3×2   4
+       职阶许可：王后          1200    太阳熔炉          3×2   4
+       太阳熔炉炉心模型        2000    太阳熔炉          3×2   4
+
+       配料位数 = Building_WorkTable.IngredientStackCells
+                = GenAdj.CellsOccupiedBy(工作台) 的格子数，
+       所以材料种类必须压在台面格数之内；每种材料的用量也都压在其
+       堆叠上限之内，确保每种只占 1 格。
+
+       ── 关于六种职阶许可的来源模块 ────────────────────────────
+       职阶许可（Milian_NamePlate_*）的 Def 并不在 1.6\Defs 里，而是
+       定义在本体的 Biotech 子模块（1.6\Mods\Biotech\BiotechDefs\
+       ThingDefs_Items\Items_Exotic.xml）。米莉拉本体在 About.xml 中
+       强制依赖 Ludeon.RimWorld.Biotech，所以这些 Def 必然存在，
+       本模组直接引用是安全的。即便如此，下面六条配方仍显式标注了
+       MayRequire="Ludeon.RimWorld.Biotech" 作为防御：万一有人绕过
+       依赖检查强行启用本体（导致 Biotech 子模块不加载），配方会静默
+       跳过，而不是在日志里抛出找不到 Def 的红字。
+
+       ── 平衡原则：第一枚仍然必须走原渠道 ──────────────────────
+       · 职阶许可：原渠道是米莉拉商队 / 教会贡品收集者 / 米帝工程院商船。
+         自制成本与市价基本持平（约 0.89~1.11 倍），不产生套利。
+       · 太阳熔炉炉心模型：配方挂在太阳熔炉上，而太阳熔炉必须先拿到
+         一枚炉心模型做分析才能解锁 → 必须先贸易买一枚。
+       =============================================================== -->
+
+  <!-- ═══════════ 米莉拉通用工作台（2×1，台面 2 格 → 只用 2 种材料）═══════════ -->
+
+  <!-- ── 谐振子 ────────────────────────────────────────────────────
+       谐振仪的核心部件。原模组只能向米莉拉商队买（8~15 个/次）。
+       材料：日凌晶 4 + 工业零部件 1    成本 ≈ 132 银（市价 100 银）
+       前置：通用工作台 (Milira_UniversalPrinter) -->
+  <RecipeDef>
+    <defName>GNH_Recipe_ResonatorCore</defName>
+    <label>Print Resonator Core</label>
+    <description>Print a resonator core on the Milira universal workbench, using a solar crystal as the resonance medium and an industrial component for the precision assembly.&#xA;The resonator rig these cores are meant to feed has not been released by the Milira base mod yet, so for now a core is just a valuable piece of stock - keep it, or sell it to a trader.</description>
+    <jobString>Printing a resonator core.</jobString>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <workAmount>1200</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milira_ResonatorCore>1</Milira_ResonatorCore>
+    </products>
+    <recipeUsers>
+      <li>Milira_UniversalBench</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_UniversalPrinter</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- ── 职阶许可：士兵 ────────────────────────────────────────────
+       米莉安的身份识别芯片。原渠道：米莉拉商队 / 教会贡品收集者。
+       材料：日凌晶 1 + 工业零部件 1    成本 ≈ 57 银（市价 60 银） -->
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>GNH_Recipe_NamePlate_Pawn</defName>
+    <label>Etch Class Permit: Pawn</label>
+    <description>Etch a Pawn-class identity chip for the Milian, using a solar crystal as the circuit medium and an industrial component as the carrier board.</description>
+    <jobString>Etching a Pawn-class permit.</jobString>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <workAmount>1000</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milian_NamePlate_Pawn>1</Milian_NamePlate_Pawn>
+    </products>
+    <recipeUsers>
+      <li>Milira_UniversalBench</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_UniversalPrinter</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- ── 职阶许可：骑士 ────────────────────────────────────────────
+       骑士是武力职阶，线路更密、承载结构更强。
+       材料：日凌晶 2 + 工业零部件 2    成本 ≈ 114 银（市价 120 银） -->
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>GNH_Recipe_NamePlate_Knight</defName>
+    <label>Etch Class Permit: Knight</label>
+    <description>Etch a Knight-class identity chip for the Milian, using a solar crystal as the circuit medium and an industrial component as the carrier board.</description>
+    <jobString>Etching a Knight-class permit.</jobString>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <workAmount>1500</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milian_NamePlate_Knight>1</Milian_NamePlate_Knight>
+    </products>
+    <recipeUsers>
+      <li>Milira_UniversalBench</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_UniversalPrinter</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- ── 职阶许可：主教 ────────────────────────────────────────────
+       主教是灵能职阶，线路本身承担更多灵能负载，因此更吃日凌晶。
+       材料：日凌晶 3 + 工业零部件 1    成本 ≈ 107 银（市价 120 银） -->
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>GNH_Recipe_NamePlate_Bishop</defName>
+    <label>Etch Class Permit: Bishop</label>
+    <description>Etch a Bishop-class identity chip for the Milian. As a psionic class, the circuitry itself carries a heavier psionic load, and so it consumes more solar crystal.</description>
+    <jobString>Etching a Bishop-class permit.</jobString>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <workAmount>1500</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milian_NamePlate_Bishop>1</Milian_NamePlate_Bishop>
+    </products>
+    <recipeUsers>
+      <li>Milira_UniversalBench</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_UniversalPrinter</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- ── 职阶许可：战车 ────────────────────────────────────────────
+       战车是重装职阶，芯片线路最密、承载件最多。
+       材料：日凌晶 4 + 工业零部件 3    成本 ≈ 196 银（市价 200 银） -->
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>GNH_Recipe_NamePlate_Rook</defName>
+    <label>Etch Class Permit: Rook</label>
+    <description>Etch a Rook-class identity chip for the Milian. As a heavy class, its circuitry is the densest and needs the most carrier components.</description>
+    <jobString>Etching a Rook-class permit.</jobString>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <workAmount>2000</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milian_NamePlate_Rook>1</Milian_NamePlate_Rook>
+    </products>
+    <recipeUsers>
+      <li>Milira_UniversalBench</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_UniversalPrinter</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- ═══════════ 太阳熔炉（3×2，台面 6 格 → 可用 4 种材料）═══════════ -->
+
+  <!-- ── 职阶许可：国王 ────────────────────────────────────────────
+       最高职阶之一。国王侧重军权与统御，配方偏金属与黄金。
+       材料：日盘钢 20 + 日凌晶 15 + 高级零部件 2 + 黄金 20
+       成本 ≈ 1335 银（市价 1200 银）
+       前置：太阳熔炉建造 (Milira_SunBlastFurnace_Build) -->
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>GNH_Recipe_NamePlate_King</defName>
+    <label>Etch Class Permit: King</label>
+    <description>Etch a King-class identity chip in the solar furnace. King-class authority leans on military command, and so its chip is built around forged steel and gold.</description>
+    <jobString>Etching a King-class permit.</jobString>
+    <effectWorking>Milira_SunBlastFurnaceBurning</effectWorking>
+    <soundWorking>MiliraRecipe_SunBlastFurnace</soundWorking>
+    <workAmount>7000</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SunPlateSteel</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>15</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentSpacer</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Gold</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milian_NamePlate_King>1</Milian_NamePlate_King>
+    </products>
+    <recipeUsers>
+      <li>Milira_SunBlastFurnace</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_SunBlastFurnace_Build</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- ── 职阶许可：王后 ────────────────────────────────────────────
+       最高职阶之一。王后侧重神权与灵能，配方偏晶石与翡翠。
+       材料：日盘钢 15 + 日凌晶 20 + 高级零部件 2 + 翡翠 20
+       成本 ≈ 1270 银（市价 1200 银）
+       前置：太阳熔炉建造 (Milira_SunBlastFurnace_Build) -->
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>GNH_Recipe_NamePlate_Queen</defName>
+    <label>Etch Class Permit: Queen</label>
+    <description>Etch a Queen-class identity chip in the solar furnace. Queen-class authority leans on divine rite and psionics, and so its chip is built around crystals and jade.</description>
+    <jobString>Etching a Queen-class permit.</jobString>
+    <effectWorking>Milira_SunBlastFurnaceBurning</effectWorking>
+    <soundWorking>MiliraRecipe_SunBlastFurnace</soundWorking>
+    <workAmount>7000</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SunPlateSteel</li>
+          </thingDefs>
+        </filter>
+        <count>15</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentSpacer</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Jade</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milian_NamePlate_Queen>1</Milian_NamePlate_Queen>
+    </products>
+    <recipeUsers>
+      <li>Milira_SunBlastFurnace</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_SunBlastFurnace_Build</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- ── 太阳熔炉炉心模型 ──────────────────────────────────────────
+       解锁「太阳熔炉建造」研究的分析道具，原渠道只能贸易买。
+       配方挂在太阳熔炉上，而太阳熔炉本身要先有模型才能解锁，
+       因此第一枚仍必须向米莉拉商队 / 米帝工程院商船购买，
+       之后才能在炉内自行铸造（成本与市价基本等值，不产生套利）。
+       材料：日盘钢 40 + 日凌晶 30 + 高级零部件 2 + 玻璃钢 20
+       成本 ≈ 2050 银（市价 2000 银） -->
+  <RecipeDef>
+    <defName>GNH_Recipe_FurnaceCoreModel</defName>
+    <label>Model Sunblast Furnace Core</label>
+    <description>Cast a scale model of the sunblast furnace core in the solar furnace itself — the study piece from which the furnace's construction can be learned.</description>
+    <jobString>Modelling a sunblast furnace core.</jobString>
+    <effectWorking>Milira_SunBlastFurnaceBurning</effectWorking>
+    <soundWorking>MiliraRecipe_SunBlastFurnace</soundWorking>
+    <workAmount>8000</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SunPlateSteel</li>
+          </thingDefs>
+        </filter>
+        <count>40</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>30</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentSpacer</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Plasteel</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milira_FurnaceCoreModel>1</Milira_FurnaceCoreModel>
+    </products>
+    <recipeUsers>
+      <li>Milira_SunBlastFurnace</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_SunBlastFurnace_Build</researchPrerequisite>
+  </RecipeDef>
+
+</Defs>

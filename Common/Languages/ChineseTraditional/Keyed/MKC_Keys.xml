@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <MKC_SettingsCategory>米莉拉：關鍵件製造</MKC_SettingsCategory>
+  <MKC_SimpleMode>簡單模式</MKC_SimpleMode>
+  <MKC_SimpleModeDesc>材料需求減半，工作量降到 20%。預設關閉（保持與原模組經濟量級一致的平衡）。開啟後立即生效，無需重開遊戲。</MKC_SimpleModeDesc>
+  <MKC_CurrentEffect>目前效果：{0}</MKC_CurrentEffect>
+  <MKC_On>簡單模式已啟用（材料減半、工作量 20%）</MKC_On>
+  <MKC_Off>平衡模式（作者預設配平）</MKC_Off>
+</LanguageData>

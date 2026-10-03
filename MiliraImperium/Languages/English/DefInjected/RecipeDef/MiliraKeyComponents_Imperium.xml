@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <GNH_Recipe_PsionicCore.label>Weave Psionic Core</GNH_Recipe_PsionicCore.label>
+  <GNH_Recipe_PsionicCore.description>Using a psionic-tuned spatial curvature array, weave a Psionic Core out of a Shroud Crystal, Solar Crystal, Neutronium, Dark Matter, Gold and Jade.</GNH_Recipe_PsionicCore.description>
+  <GNH_Recipe_PsionicCore.jobString>Weaving a Psionic Core.</GNH_Recipe_PsionicCore.jobString>
+
+  <GNH_Recipe_GargantuaCore.label>Weave Gargantua Core</GNH_Recipe_GargantuaCore.label>
+  <GNH_Recipe_GargantuaCore.description>Fold a Psionic Core into an ultra-microscopic black hole, casing the singularity in Neutronium, Dark Matter, Solar-Forged Steel, Gold and Jade.</GNH_Recipe_GargantuaCore.description>
+  <GNH_Recipe_GargantuaCore.jobString>Weaving a Gargantua Core.</GNH_Recipe_GargantuaCore.jobString>
+
+  <GNH_Recipe_GoldenMiliraFeather.label>Weave Golden Milira Feather</GNH_Recipe_GoldenMiliraFeather.label>
+  <GNH_Recipe_GoldenMiliraFeather.description>Infuse Milira feathers with Shroud ash and gold, weaving them into a Golden Milira Feather — the token the Imperium accepts in exchange for its rarest wares.</GNH_Recipe_GoldenMiliraFeather.description>
+  <GNH_Recipe_GoldenMiliraFeather.jobString>Weaving a Golden Milira Feather.</GNH_Recipe_GoldenMiliraFeather.jobString>
+</LanguageData>

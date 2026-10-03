@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ===============================================================
+       米莉拉：关键物品制作补丁 —— 米帝拓展部分【批量配方】
+       与 MiliraKeyComponents_Imperium.xml 的单件配方一一对应。
+       本文件夹由 LoadFolders.xml 控制，仅当安装了
+       「米莉拉派系：米莉拉帝国 (Ariandel.MiliraImperium)」时才会加载。
+
+       ── 批量倍率按【台面格数】决定 ──────────────────────────
+       引力织造器 3×3 = 9 格，各条批量配方的实占格数：
+
+         灵能核心 x5   → 虚境凌晶1 + 日凌晶2 + 零素1 + 暗物质1 + 黄金1 + 翡翠1 = 7 格
+         金色羽毛 x5   → 米莉拉之羽1 + 虚境灵尘1 + 黄金1                    = 3 格
+         卡冈都亚核心 x3 → 灵能核心3 + 零素1 + 暗物质1 + 日盘钢1 + 黄金1 + 翡翠1 = 8 格
+
+       均未超过 9 格。卡冈都亚核心的倍率之所以只能到 x3，是因为它吃掉
+       「灵能核心」——而灵能核心堆叠上限为 1，每多产一个就多占一格。
+
+       ── 工作量 ──────────────────────────────────────────────
+       批量工作量 = 单件工作量 × 倍率 × 0.85（约 15% 的规模折扣）。
+       =============================================================== -->
+
+  <!-- 灵能核心 x5：单件 6000 → 批量 25000 -->
+  <RecipeDef>
+    <defName>GNH_Recipe_PsionicCore_Bulk</defName>
+    <label>Weave Psionic Core x5</label>
+    <description>Weave five Psionic Cores in the gravity loom in one batch.</description>
+    <jobString>Weaving Psionic Cores in bulk.</jobString>
+    <effectWorking>Milira_SunBlastFurnaceBurning</effectWorking>
+    <soundWorking>MiliraRecipe_SunBlastFurnace</soundWorking>
+    <workAmount>25000</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_ShroudCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>75</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_Neutronium</li>
+          </thingDefs>
+        </filter>
+        <count>50</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_DarkMatter</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Gold</li>
+          </thingDefs>
+        </filter>
+        <count>75</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Jade</li>
+          </thingDefs>
+        </filter>
+        <count>50</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milira_PsionicCore>5</Milira_PsionicCore>
+    </products>
+    <recipeUsers>
+      <li>Milira_GravityLoom</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_Imperium_MatterWeaving</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- 卡冈都亚核心 x3：单件 9000 → 批量 22500 -->
+  <RecipeDef>
+    <defName>GNH_Recipe_GargantuaCore_Bulk</defName>
+    <label>Weave Gargantua Core x3</label>
+    <description>Weave three Gargantua Cores in the gravity loom in one batch.</description>
+    <jobString>Weaving Gargantua Cores in bulk.</jobString>
+    <effectWorking>Milira_SunBlastFurnaceBurning</effectWorking>
+    <soundWorking>MiliraRecipe_SunBlastFurnace</soundWorking>
+    <workAmount>22500</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_PsionicCore</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_Neutronium</li>
+          </thingDefs>
+        </filter>
+        <count>60</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_DarkMatter</li>
+          </thingDefs>
+        </filter>
+        <count>9</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SunPlateSteel</li>
+          </thingDefs>
+        </filter>
+        <count>45</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Gold</li>
+          </thingDefs>
+        </filter>
+        <count>45</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Jade</li>
+          </thingDefs>
+        </filter>
+        <count>30</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milira_GargantuaCore>3</Milira_GargantuaCore>
+    </products>
+    <recipeUsers>
+      <li>Milira_GravityLoom</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_Imperium_DarkMatterConstraint</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- 金色米莉拉之羽 x5：单件 6000 → 批量 25000 -->
+  <RecipeDef>
+    <defName>GNH_Recipe_GoldenMiliraFeather_Bulk</defName>
+    <label>Weave Golden Milira Feather x5</label>
+    <description>Weave five Golden Milira Feathers in the gravity loom in one batch.</description>
+    <jobString>Weaving Golden Milira Feathers in bulk.</jobString>
+    <effectWorking>Milira_SunBlastFurnaceBurning</effectWorking>
+    <soundWorking>MiliraRecipe_SunBlastFurnace</soundWorking>
+    <workAmount>25000</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_Feather</li>
+          </thingDefs>
+        </filter>
+        <count>100</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>MI_Thing_ShroudAsh</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Gold</li>
+          </thingDefs>
+        </filter>
+        <count>150</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milira_Feather_gold>5</Milira_Feather_gold>
+    </products>
+    <recipeUsers>
+      <li>Milira_GravityLoom</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_ImperiumPsyBlade</researchPrerequisite>
+  </RecipeDef>
+
+</Defs>

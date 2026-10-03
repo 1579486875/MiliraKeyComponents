@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <GNH_Recipe_ResonatorCore_Bulk.label>打印谐振子 x10</GNH_Recipe_ResonatorCore_Bulk.label>
+  <GNH_Recipe_ResonatorCore_Bulk.description>在米莉拉通用工作台上一次性打印十枚谐振子。米莉拉本体还没把谐振仪放出来，这批核心目前只能囤着或者卖给商队。</GNH_Recipe_ResonatorCore_Bulk.description>
+  <GNH_Recipe_ResonatorCore_Bulk.jobString>正在批量打印谐振子。</GNH_Recipe_ResonatorCore_Bulk.jobString>
+
+  <GNH_Recipe_NamePlate_Pawn_Bulk.label>刻蚀职阶许可：士兵 x10</GNH_Recipe_NamePlate_Pawn_Bulk.label>
+  <GNH_Recipe_NamePlate_Pawn_Bulk.description>一次性刻蚀十枚“士兵”职阶的身份识别芯片。</GNH_Recipe_NamePlate_Pawn_Bulk.description>
+  <GNH_Recipe_NamePlate_Pawn_Bulk.jobString>正在批量刻蚀“士兵”职阶许可。</GNH_Recipe_NamePlate_Pawn_Bulk.jobString>
+
+  <GNH_Recipe_NamePlate_Knight_Bulk.label>刻蚀职阶许可：骑士 x10</GNH_Recipe_NamePlate_Knight_Bulk.label>
+  <GNH_Recipe_NamePlate_Knight_Bulk.description>一次性刻蚀十枚“骑士”职阶的身份识别芯片。</GNH_Recipe_NamePlate_Knight_Bulk.description>
+  <GNH_Recipe_NamePlate_Knight_Bulk.jobString>正在批量刻蚀“骑士”职阶许可。</GNH_Recipe_NamePlate_Knight_Bulk.jobString>
+
+  <GNH_Recipe_NamePlate_Bishop_Bulk.label>刻蚀职阶许可：主教 x10</GNH_Recipe_NamePlate_Bishop_Bulk.label>
+  <GNH_Recipe_NamePlate_Bishop_Bulk.description>一次性刻蚀十枚“主教”职阶的身份识别芯片。</GNH_Recipe_NamePlate_Bishop_Bulk.description>
+  <GNH_Recipe_NamePlate_Bishop_Bulk.jobString>正在批量刻蚀“主教”职阶许可。</GNH_Recipe_NamePlate_Bishop_Bulk.jobString>
+
+  <GNH_Recipe_NamePlate_Rook_Bulk.label>刻蚀职阶许可：战车 x10</GNH_Recipe_NamePlate_Rook_Bulk.label>
+  <GNH_Recipe_NamePlate_Rook_Bulk.description>一次性刻蚀十枚“战车”职阶的身份识别芯片。</GNH_Recipe_NamePlate_Rook_Bulk.description>
+  <GNH_Recipe_NamePlate_Rook_Bulk.jobString>正在批量刻蚀“战车”职阶许可。</GNH_Recipe_NamePlate_Rook_Bulk.jobString>
+
+  <GNH_Recipe_NamePlate_King_Bulk.label>刻蚀职阶许可：国王 x3</GNH_Recipe_NamePlate_King_Bulk.label>
+  <GNH_Recipe_NamePlate_King_Bulk.description>在太阳熔炉中一次性刻蚀三枚“国王”职阶的身份识别芯片。</GNH_Recipe_NamePlate_King_Bulk.description>
+  <GNH_Recipe_NamePlate_King_Bulk.jobString>正在批量刻蚀“国王”职阶许可。</GNH_Recipe_NamePlate_King_Bulk.jobString>
+
+  <GNH_Recipe_NamePlate_Queen_Bulk.label>刻蚀职阶许可：王后 x3</GNH_Recipe_NamePlate_Queen_Bulk.label>
+  <GNH_Recipe_NamePlate_Queen_Bulk.description>在太阳熔炉中一次性刻蚀三枚“王后”职阶的身份识别芯片。</GNH_Recipe_NamePlate_Queen_Bulk.description>
+  <GNH_Recipe_NamePlate_Queen_Bulk.jobString>正在批量刻蚀“王后”职阶许可。</GNH_Recipe_NamePlate_Queen_Bulk.jobString>
+</LanguageData>

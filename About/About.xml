@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>米莉拉：关键物品制作补丁</name>
+  <author>大赢经直插白皮赢道</author>
+  <packageId>gnh.cn.cys.milirakeycomponents</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modVersion>1.6.3</modVersion>
+  <modIconPath IgnoreIfNoMatchingField="True">MKC/ModIcon</modIconPath>
+  <modDependencies>
+    <li>
+      <packageId>Ancot.MiliraRace</packageId>
+      <displayName>Milira Race</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3256974620</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ancot.MiliraRace</li>
+    <li>Ariandel.MiliraImperium</li>
+  </loadAfter>
+  <description>米莉拉系模组里有十来样东西原本是造不出来的。属于米莉拉天空精灵（本体）的有谐振子、太阳熔炉炉心模型，以及士兵 / 骑士 / 主教 / 战车 / 国王 / 王后六种职阶许可；属于米莉拉帝国拓展的有灵能核心、卡冈都亚核心、金色米莉拉之羽。这些平时只能靠商队买、用金色羽毛兑换，或者去海盗据点抢，本补丁把它们接进了工作台。
+
+【在工作台上能做的东西】
+
+米莉拉通用工作台
+  谐振子            日凌晶 4 + 工业零部件 1（谐振仪未实装，目前只作储备与贸易品）
+  职阶许可：士兵     日凌晶 1 + 工业零部件 1
+  职阶许可：骑士     日凌晶 2 + 工业零部件 2
+  职阶许可：主教     日凌晶 3 + 工业零部件 1
+  职阶许可：战车     日凌晶 4 + 工业零部件 3
+
+太阳熔炉
+  职阶许可：国王     日盘钢 20 + 日凌晶 15 + 高级零部件 2 + 黄金 20
+  职阶许可：王后     日盘钢 15 + 日凌晶 20 + 高级零部件 2 + 翡翠 20
+  太阳熔炉炉心模型   日盘钢 40 + 日凌晶 30 + 高级零部件 2 + 玻璃钢 20
+
+引力织造器（要装米莉拉帝国拓展才有这台）
+  灵能核心          虚境凌晶 1 + 日凌晶 15 + 零素 10 + 暗物质 1 + 黄金 15 + 翡翠 10
+  卡冈都亚核心      灵能核心 1 + 零素 20 + 暗物质 3 + 日盘钢 15 + 黄金 15 + 翡翠 10
+  金色米莉拉之羽    米莉拉之羽 20 + 虚境灵尘 1 + 黄金 30
+
+这些配方都带了批量版（x10 / x5 / x3），省得一个个点。
+
+【第一份还是得按老办法弄】
+
+配方挂在对应的工作台上，而工作台本身就有门槛，所以绕不过原来那套流程：
+
+  引力织造器的造价里含 1 个灵能核心，第一台照样得用羽毛换或者去打据点；
+  太阳熔炉要先拿一枚炉心模型做分析才能解锁研究，第一枚只能找商队买；
+  金色羽毛原本靠帝国骑士头衔定期领，自制成本我特意定得比它换东西的价值还高一点，
+  不然就成了印钞机。
+
+材料数量是按原模组的价格配平的，成本基本等于东西本身的价值，不至于把贸易系统架空。
+
+【简单模式】
+
+模组设置里有个开关，打开后材料减半、工作量降到 20%。不开就是上面这套默认配平。
+
+【安装】
+
+需要米莉拉天空精灵（本体），放在它后面加载就行。
+装了米莉拉帝国拓展会自动多出 3 种引力织造器配方（单件版与批量版合计 6 条），
+没装也不报错，只是少那 6 条。
+不需要 Harmony。旧存档可以直接装，也可以随时删掉。
+
+【语言】
+
+简体中文 / 繁体中文 / English</description>
+</ModMetaData>

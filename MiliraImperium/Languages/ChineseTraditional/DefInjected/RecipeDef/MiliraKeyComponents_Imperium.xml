@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <GNH_Recipe_PsionicCore.label>織造靈能核心</GNH_Recipe_PsionicCore.label>
+  <GNH_Recipe_PsionicCore.description>以靈能調諧的空間曲率陣列，將虛境凌晶、日凌晶、零素、暗物質、黃金與翡翠重新編織成一枚靈能核心。</GNH_Recipe_PsionicCore.description>
+  <GNH_Recipe_PsionicCore.jobString>正在織造靈能核心。</GNH_Recipe_PsionicCore.jobString>
+
+  <GNH_Recipe_GargantuaCore.label>織造卡岡都亞核心</GNH_Recipe_GargantuaCore.label>
+  <GNH_Recipe_GargantuaCore.description>將一枚靈能核心摺疊成超微小黑洞，並以零素、暗物質、日盤鋼、黃金與翡翠為這顆奇點鑄出約束外殼。</GNH_Recipe_GargantuaCore.description>
+  <GNH_Recipe_GargantuaCore.jobString>正在織造卡岡都亞核心。</GNH_Recipe_GargantuaCore.jobString>
+
+  <GNH_Recipe_GoldenMiliraFeather.label>織造金色米莉拉之羽</GNH_Recipe_GoldenMiliraFeather.label>
+  <GNH_Recipe_GoldenMiliraFeather.description>將米莉拉之羽與虛境靈塵、黃金一同浸煉，織成一枚金色米莉拉之羽——那是帝國用來交換其最稀有物資的憑證。</GNH_Recipe_GoldenMiliraFeather.description>
+  <GNH_Recipe_GoldenMiliraFeather.jobString>正在織造金色米莉拉之羽。</GNH_Recipe_GoldenMiliraFeather.jobString>
+</LanguageData>

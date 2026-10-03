@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ===============================================================
+       米莉拉：关键件制造 —— 基础部分【批量配方】
+       与 MiliraKeyComponents_Base.xml 的单件配方一一对应，
+       方便一次下单做多个。同样只需要「米莉拉天空精灵」本体。
+
+       ── 批量倍率按【台面格数】决定，不是随便定的 ────────────────
+       配料位数 = 工作台自身格数，材料按堆放进这些格子。
+       批量会把用量同比放大，堆数随之上升，所以倍率必须留出余量：
+
+       米莉拉通用工作台（2×1 = 2 格）→ x10
+         两种材料各 1 堆即可容纳（日凌晶 ≤50、工业零部件 ≤50）
+       太阳熔炉（3×2 = 6 格）→ x3
+         国王 4 堆 / 王后 5 堆，均未超过 6 格；再往上就会溢出
+
+       ── 工作量 ──────────────────────────────────────────────
+       批量工作量 = 单件工作量 × 倍率 × 0.85（约 15% 的规模折扣，
+       与原模组「熔炼钢渣」的 Bulk 配方取法一致）。
+
+       ── 职阶许可的 DLC 兜底 ─────────────────────────────────
+       与单件配方同理，六种职阶许可的批量配方同样标注
+       MayRequire="Ludeon.RimWorld.Biotech"，缺失时静默跳过。
+       =============================================================== -->
+
+  <!-- ═══════════ 米莉拉通用工作台（x10 批量）═══════════ -->
+
+  <!-- 谐振子 x10：单件 1200 → 批量 10000 -->
+  <RecipeDef>
+    <defName>GNH_Recipe_ResonatorCore_Bulk</defName>
+    <label>Print Resonator Core x10</label>
+    <description>Print ten resonator cores on the Milira universal workbench in one batch.&#xA;The resonator rig has not been released by the Milira base mod yet, so these cores are only good as stockpile or trade goods for now.</description>
+    <jobString>Printing resonator cores in bulk.</jobString>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <workAmount>10000</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>40</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milira_ResonatorCore>10</Milira_ResonatorCore>
+    </products>
+    <recipeUsers>
+      <li>Milira_UniversalBench</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_UniversalPrinter</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- 职阶许可：士兵 x10 -->
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>GNH_Recipe_NamePlate_Pawn_Bulk</defName>
+    <label>Etch Class Permit: Pawn x10</label>
+    <description>Etch ten Pawn-class identity chips for the Milian in one batch.</description>
+    <jobString>Etching Pawn-class permits in bulk.</jobString>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <workAmount>8500</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milian_NamePlate_Pawn>10</Milian_NamePlate_Pawn>
+    </products>
+    <recipeUsers>
+      <li>Milira_UniversalBench</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_UniversalPrinter</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- 职阶许可：骑士 x10 -->
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>GNH_Recipe_NamePlate_Knight_Bulk</defName>
+    <label>Etch Class Permit: Knight x10</label>
+    <description>Etch ten Knight-class identity chips for the Milian in one batch.</description>
+    <jobString>Etching Knight-class permits in bulk.</jobString>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <workAmount>12500</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milian_NamePlate_Knight>10</Milian_NamePlate_Knight>
+    </products>
+    <recipeUsers>
+      <li>Milira_UniversalBench</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_UniversalPrinter</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- 职阶许可：主教 x10 -->
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>GNH_Recipe_NamePlate_Bishop_Bulk</defName>
+    <label>Etch Class Permit: Bishop x10</label>
+    <description>Etch ten Bishop-class identity chips for the Milian in one batch.</description>
+    <jobString>Etching Bishop-class permits in bulk.</jobString>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <workAmount>12500</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>30</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milian_NamePlate_Bishop>10</Milian_NamePlate_Bishop>
+    </products>
+    <recipeUsers>
+      <li>Milira_UniversalBench</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_UniversalPrinter</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- 职阶许可：战车 x10 -->
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>GNH_Recipe_NamePlate_Rook_Bulk</defName>
+    <label>Etch Class Permit: Rook x10</label>
+    <description>Etch ten Rook-class identity chips for the Milian in one batch.</description>
+    <jobString>Etching Rook-class permits in bulk.</jobString>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <workAmount>17000</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>40</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>30</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milian_NamePlate_Rook>10</Milian_NamePlate_Rook>
+    </products>
+    <recipeUsers>
+      <li>Milira_UniversalBench</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_UniversalPrinter</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- ═══════════ 太阳熔炉（x3 批量）═══════════ -->
+
+  <!-- 职阶许可：国王 x3：单件 7000 → 批量 17500 -->
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>GNH_Recipe_NamePlate_King_Bulk</defName>
+    <label>Etch Class Permit: King x3</label>
+    <description>Etch three King-class identity chips in the solar furnace in one batch.</description>
+    <jobString>Etching King-class permits in bulk.</jobString>
+    <effectWorking>Milira_SunBlastFurnaceBurning</effectWorking>
+    <soundWorking>MiliraRecipe_SunBlastFurnace</soundWorking>
+    <workAmount>17500</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SunPlateSteel</li>
+          </thingDefs>
+        </filter>
+        <count>60</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>45</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentSpacer</li>
+          </thingDefs>
+        </filter>
+        <count>6</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Gold</li>
+          </thingDefs>
+        </filter>
+        <count>60</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milian_NamePlate_King>3</Milian_NamePlate_King>
+    </products>
+    <recipeUsers>
+      <li>Milira_SunBlastFurnace</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_SunBlastFurnace_Build</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- 职阶许可：王后 x3 -->
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>GNH_Recipe_NamePlate_Queen_Bulk</defName>
+    <label>Etch Class Permit: Queen x3</label>
+    <description>Etch three Queen-class identity chips in the solar furnace in one batch.</description>
+    <jobString>Etching Queen-class permits in bulk.</jobString>
+    <effectWorking>Milira_SunBlastFurnaceBurning</effectWorking>
+    <soundWorking>MiliraRecipe_SunBlastFurnace</soundWorking>
+    <workAmount>17500</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SunPlateSteel</li>
+          </thingDefs>
+        </filter>
+        <count>45</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>60</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentSpacer</li>
+          </thingDefs>
+        </filter>
+        <count>6</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Jade</li>
+          </thingDefs>
+        </filter>
+        <count>60</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milian_NamePlate_Queen>3</Milian_NamePlate_Queen>
+    </products>
+    <recipeUsers>
+      <li>Milira_SunBlastFurnace</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_SunBlastFurnace_Build</researchPrerequisite>
+  </RecipeDef>
+
+</Defs>

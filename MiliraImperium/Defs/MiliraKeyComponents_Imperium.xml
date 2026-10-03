@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ===============================================================
+       米莉拉：关键物品制作补丁 —— 米帝拓展部分
+       本文件夹由 LoadFolders.xml 控制：仅当安装了
+       「米莉拉派系：米莉拉帝国 (Ariandel.MiliraImperium)」时才会加载。
+       没装米帝的玩家不会读到本文件，也不会出现引用不到 Def 的翻译。
+
+       三条配方都挂在米帝的「引力织造器」上，并沿用米帝配方惯用的
+       特效与音效（Milira_SunBlastFurnaceBurning / MiliraRecipe_SunBlastFurnace）。
+
+       ── 台面格数约束（配料位 = 工作台自身格数）───────────────
+       引力织造器 3×3 = 9 格，三条配方的材料种类分别为 6 / 6 / 3，
+       且每种用量都在其堆叠上限内，确保每种只占 1 格。
+
+       ── 平衡原则：第一枚仍然要走原渠道 ──────────────────────
+       引力织造器自身造价含 1 个灵能核心 → 必须先兑换或打据点拿到
+       第一枚，才能造出这台工作台，之后才谈得上自给自足。
+       =============================================================== -->
+
+  <!-- ── 3. 灵能核心 ───────────────────────────────────────────────
+       材料：虚境凌晶 1 + 日凌晶 15 + 零素 10 + 暗物质 1 + 黄金 15 + 翡翠 10
+       成本 ≈ 3305 银（市价 1500 银）
+       前置：物质编织 (Milira_Imperium_MatterWeaving) -->
+  <RecipeDef>
+    <defName>GNH_Recipe_PsionicCore</defName>
+    <label>Weave Psionic Core</label>
+    <description>Using a psionic-tuned spatial curvature array, weave a Psionic Core out of a Shroud Crystal, Solar Crystal, Neutronium, Dark Matter, Gold and Jade.</description>
+    <jobString>Weaving a Psionic Core.</jobString>
+    <effectWorking>Milira_SunBlastFurnaceBurning</effectWorking>
+    <soundWorking>MiliraRecipe_SunBlastFurnace</soundWorking>
+    <workAmount>6000</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_ShroudCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SolarCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>15</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_Neutronium</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_DarkMatter</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Gold</li>
+          </thingDefs>
+        </filter>
+        <count>15</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Jade</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milira_PsionicCore>1</Milira_PsionicCore>
+    </products>
+    <recipeUsers>
+      <li>Milira_GravityLoom</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_Imperium_MatterWeaving</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- ── 4. 卡冈都亚核心 ───────────────────────────────────────────
+       材料：灵能核心 1 + 零素 20 + 暗物质 3 + 日盘钢 15 + 黄金 15 + 翡翠 10
+       成本 ≈ 4130 银（市价 1500 银）
+       前置：暗物质约束 (Milira_Imperium_DarkMatterConstraint) -->
+  <RecipeDef>
+    <defName>GNH_Recipe_GargantuaCore</defName>
+    <label>Weave Gargantua Core</label>
+    <description>Fold a Psionic Core into an ultra-microscopic black hole, casing the singularity in Neutronium, Dark Matter, Solar-Forged Steel, Gold and Jade.</description>
+    <jobString>Weaving a Gargantua Core.</jobString>
+    <effectWorking>Milira_SunBlastFurnaceBurning</effectWorking>
+    <soundWorking>MiliraRecipe_SunBlastFurnace</soundWorking>
+    <workAmount>9000</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_PsionicCore</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_Neutronium</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_DarkMatter</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_SunPlateSteel</li>
+          </thingDefs>
+        </filter>
+        <count>15</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Gold</li>
+          </thingDefs>
+        </filter>
+        <count>15</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Jade</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milira_GargantuaCore>1</Milira_GargantuaCore>
+    </products>
+    <recipeUsers>
+      <li>Milira_GravityLoom</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_Imperium_DarkMatterConstraint</researchPrerequisite>
+  </RecipeDef>
+
+  <!-- ── 5. 金色米莉拉之羽 ─────────────────────────────────────────
+       帝国货币，原渠道只有「帝国骑士头衔后定期领取」。
+       材料选用虚境灵尘，正对应原描述里的「注入了微量超凡粉尘」。
+       材料：米莉拉之羽 20 + 虚境灵尘 1 + 黄金 30
+       成本 ≈ 2040 银（市价 1500 银 —— 刻意更贵，避免变成印钞机）
+       前置：灵能利刃 (Milira_ImperiumPsyBlade，虚境灵尘的研究) -->
+  <RecipeDef>
+    <defName>GNH_Recipe_GoldenMiliraFeather</defName>
+    <label>Weave Golden Milira Feather</label>
+    <description>Infuse Milira feathers with Shroud ash and gold, weaving them into a Golden Milira Feather — the token the Imperium accepts in exchange for its rarest wares.</description>
+    <jobString>Weaving a Golden Milira Feather.</jobString>
+    <effectWorking>Milira_SunBlastFurnaceBurning</effectWorking>
+    <soundWorking>MiliraRecipe_SunBlastFurnace</soundWorking>
+    <workAmount>6000</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milira_Feather</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>MI_Thing_ShroudAsh</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Gold</li>
+          </thingDefs>
+        </filter>
+        <count>30</count>
+      </li>
+    </ingredients>
+    <products>
+      <Milira_Feather_gold>1</Milira_Feather_gold>
+    </products>
+    <recipeUsers>
+      <li>Milira_GravityLoom</li>
+    </recipeUsers>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>Milira_ImperiumPsyBlade</researchPrerequisite>
+  </RecipeDef>
+
+</Defs>

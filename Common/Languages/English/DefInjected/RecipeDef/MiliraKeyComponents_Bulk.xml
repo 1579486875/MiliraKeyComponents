@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <GNH_Recipe_ResonatorCore_Bulk.label>Print Resonator Core x10</GNH_Recipe_ResonatorCore_Bulk.label>
+  <GNH_Recipe_ResonatorCore_Bulk.description>Print ten resonator cores on the Milira universal workbench in one batch. The resonator rig has not been released by the Milira base mod yet, so these cores are only good as stockpile or trade goods for now.</GNH_Recipe_ResonatorCore_Bulk.description>
+  <GNH_Recipe_ResonatorCore_Bulk.jobString>Printing resonator cores in bulk.</GNH_Recipe_ResonatorCore_Bulk.jobString>
+
+  <GNH_Recipe_NamePlate_Pawn_Bulk.label>Etch Class Permit: Pawn x10</GNH_Recipe_NamePlate_Pawn_Bulk.label>
+  <GNH_Recipe_NamePlate_Pawn_Bulk.description>Etch ten Pawn-class identity chips for the Milian in one batch.</GNH_Recipe_NamePlate_Pawn_Bulk.description>
+  <GNH_Recipe_NamePlate_Pawn_Bulk.jobString>Etching Pawn-class permits in bulk.</GNH_Recipe_NamePlate_Pawn_Bulk.jobString>
+
+  <GNH_Recipe_NamePlate_Knight_Bulk.label>Etch Class Permit: Knight x10</GNH_Recipe_NamePlate_Knight_Bulk.label>
+  <GNH_Recipe_NamePlate_Knight_Bulk.description>Etch ten Knight-class identity chips for the Milian in one batch.</GNH_Recipe_NamePlate_Knight_Bulk.description>
+  <GNH_Recipe_NamePlate_Knight_Bulk.jobString>Etching Knight-class permits in bulk.</GNH_Recipe_NamePlate_Knight_Bulk.jobString>
+
+  <GNH_Recipe_NamePlate_Bishop_Bulk.label>Etch Class Permit: Bishop x10</GNH_Recipe_NamePlate_Bishop_Bulk.label>
+  <GNH_Recipe_NamePlate_Bishop_Bulk.description>Etch ten Bishop-class identity chips for the Milian in one batch.</GNH_Recipe_NamePlate_Bishop_Bulk.description>
+  <GNH_Recipe_NamePlate_Bishop_Bulk.jobString>Etching Bishop-class permits in bulk.</GNH_Recipe_NamePlate_Bishop_Bulk.jobString>
+
+  <GNH_Recipe_NamePlate_Rook_Bulk.label>Etch Class Permit: Rook x10</GNH_Recipe_NamePlate_Rook_Bulk.label>
+  <GNH_Recipe_NamePlate_Rook_Bulk.description>Etch ten Rook-class identity chips for the Milian in one batch.</GNH_Recipe_NamePlate_Rook_Bulk.description>
+  <GNH_Recipe_NamePlate_Rook_Bulk.jobString>Etching Rook-class permits in bulk.</GNH_Recipe_NamePlate_Rook_Bulk.jobString>
+
+  <GNH_Recipe_NamePlate_King_Bulk.label>Etch Class Permit: King x3</GNH_Recipe_NamePlate_King_Bulk.label>
+  <GNH_Recipe_NamePlate_King_Bulk.description>Etch three King-class identity chips in the solar furnace in one batch.</GNH_Recipe_NamePlate_King_Bulk.description>
+  <GNH_Recipe_NamePlate_King_Bulk.jobString>Etching King-class permits in bulk.</GNH_Recipe_NamePlate_King_Bulk.jobString>
+
+  <GNH_Recipe_NamePlate_Queen_Bulk.label>Etch Class Permit: Queen x3</GNH_Recipe_NamePlate_Queen_Bulk.label>
+  <GNH_Recipe_NamePlate_Queen_Bulk.description>Etch three Queen-class identity chips in the solar furnace in one batch.</GNH_Recipe_NamePlate_Queen_Bulk.description>
+  <GNH_Recipe_NamePlate_Queen_Bulk.jobString>Etching Queen-class permits in bulk.</GNH_Recipe_NamePlate_Queen_Bulk.jobString>
+</LanguageData>
