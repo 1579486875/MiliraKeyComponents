@@ -8,8 +8,9 @@
 只装米莉拉本体就能用（15 条配方）；再装米帝拓展会自动解锁另外 6 条。
 
 - packageId：`gnh.cn.cys.milirakeycomponents`
-- 支持版本：1.6 ｜ 模组版本：1.6.6
+- 支持版本：1.6 ｜ 模组版本：**1.6.7**
 - 必需依赖：米莉拉天空精灵（`Ancot.MiliraRace`，工坊 3256974620）
+- 必需依赖：**Harmony**（`brrainz.harmony`，工坊 2009463077）—— **v1.6.7 起**，原因见下面的「原版工作台制作」
 - 可选依赖：米莉拉派系：米莉拉帝国（`Ariandel.MiliraImperium`，工坊 3588393755）
 
 ---
@@ -21,11 +22,16 @@
 ```xml
 <loadFolders>
   <v1.6>
-    <li>.</li>                                                    <!-- 永远加载 -->
+    <li>Common</li>                                              <!-- 永远加载 -->
     <li IfModActive="Ariandel.MiliraImperium">MiliraImperium</li>  <!-- 装了米帝才加载 -->
   </v1.6>
 </loadFolders>
 ```
+
+> 基础部分放在 `Common` 这个明确子文件夹里，而不是用 `<li>.</li>` 表示根目录。
+> 原因是 `ModContentPack.InitLoadFolders` 内部按
+> `Path.Combine(RootDir, folderName)` 拼路径：写 `.` 会得到 `…\ModName\.` 这种不规范路径，
+> 写 `/` 反而会被 `Path.Combine` 判定成根路径、把模组目录整个丢掉。用明确子文件夹最直观也最稳。
 
 好处是**配方和它的翻译待在同一个文件夹里**：没装米帝时两边一起不加载，
 不会出现「翻译 key 找不到对应 Def」之类的报错。
@@ -71,14 +77,40 @@
 
 实现要点（都在 `Source/MKC_Mod.cs` 里）：
 
-- **只改数值，不做补丁**：程序集不含任何 Harmony 补丁，仅在启动与设置变更时直接改写 `DefDatabase` 里本模组配方的 `workAmount` 与材料数量，因此**不需要 Harmony 前置**。
+- **数值改写为主，另有一处 Harmony 补丁**：设置里的材料 / 工作量改写是**纯数据操作**（启动与设置变更时直接改写 `DefDatabase` 里本模组配方的字段）；但 v1.6.7 新增的「原版工作台制作」必须用 Harmony（下节详述），所以**本版起需要 Harmony 前置**。
 - **绝不碰原模组**：改写范围严格限定在 `defName` 以 `GNH_Recipe_` 开头的配方。
 - **首次 Apply 时缓存原始值**：之后所有改写都从缓存的原值算出，反复开关不会出现「越调越离谱」的累积误差。
 - **勾选后立即生效**：`DoSettingsWindowContents` 检测到变化就重算，不必重开游戏。
 - **三语界面**：设置文字走 `Keyed` 翻译（简中 / 繁中 / English）。
 - **第四语言兜底**：RimWorld 的语言加载是**按当前语言的文件夹名精确匹配**的（见 `Verse.LoadedLanguage` 的构造逻辑），因此玩家若使用本模组未提供的语言（日语、俄语等），`Keyed` 不会被加载，`Translate()` 会原样返回 key 名。代码里对设置界面文字做了**英文兜底**，避免界面出现 `MKC_SimpleMode` 这类字样。（Def 内容不需要这层兜底——DefInjected 缺失时 RimWorld 会自动使用 `Defs` 里内建的英文。）
 
-> ⚠️ 这也是本模组唯一的 C# 部分。之所以必须有程序集：RimWorld 的模组设置界面由 `Mod.DoSettingsWindowContents` 提供，纯 XML 无法实现。
+### 原版工作台制作（v1.6.7 新增）
+
+简单模式开启后，这些关键物品**除了米莉拉自己的工作台，也可以放在合适的原版工作台制作**：
+
+| 配方材料种类 | 可在哪张原版工作台制作 | 工时 |
+|---|---|---|
+| ≤ 4 种 | 机械加工台 `TableMachining` | **×2.5** |
+| > 4 种 | 精密装配台 `FabricationBench` | **×2.5** |
+
+在米莉拉自己的工作台上仍是**原速**。所以这是「应急通路」：手上还没有米莉拉工作台时也能造出来，
+但代价明显，不会让米莉拉工作台失去意义。
+
+> **为什么这一步非用 Harmony 不可**
+>
+> `RecipeDef` 里的工时是**配方自己的**字段，改它会让所有工作台一起变 —— 没有任何纯数据写法
+> 能表达「同一个配方、只在这一张工作台上延长」。而 `Verse.Bill` 身上带着
+> `billStack.billGiver`（也就是那台工作台），所以只能在 `Bill.GetWorkAmount` 这一层做区分。
+>
+> 补丁只影响**本模组自己的 21 条配方**：判定 = 配方名以 `GNH_Recipe_` 开头 **且** 来源模组就是本模组。
+> 这道判定不可放宽 —— 机械加工台与精密装配台在原版就是最常用的两张制作台，
+> 实测两者 `recipeUsers` 加起来有 **600+ 条配方**，其中原版就有 **95 条**
+>（防弹夹克、动力装甲、高级头盔、防毒面具、零部件……），
+> 判定一旦放宽，简单模式一开就会把它们一起乘 2.5，等于把整个游戏的手工速度砍掉一大半。
+
+> ⚠️ 程序集的存在理由不止设置界面：RimWorld 的模组设置界面由 `Mod.DoSettingsWindowContents` 提供、
+> 纯 XML 无法实现；v1.6.7 起还多了上面这个 Harmony 补丁。
+
 ## ✦ 批量生产配方
 
 除「太阳熔炉炉心模型」这类一次性科技道具外，**每条单件配方都配了一个 `_Bulk` 批量版本**，玩法与原模组的「熔炼钢渣 x3」同类。
@@ -359,9 +391,10 @@ public IEnumerable<IntVec3> IngredientStackCells => GenAdj.CellsOccupiedBy(this)
 > 编译：`dotnet build "Source\MiliraKeyComponents.csproj" -c Release -p:RimWorldDir="<RimWorld 目录>"`
 > 产物自动落到 `Common\Assemblies\`——**必须放在 LoadFolders 列出的文件夹下**，否则不会被加载。
 
-> ⚠️ `LoadFolders.xml` 中**不要**用 `<li>.</li>` 表示根目录。反编译 `ModContentPack.InitLoadFolders` 可知：只有 `/` 或 `\` 会被解析成根目录（`folderName = ""`），写 `.` 会得到 `…\ModName\.` 这种非规范路径，可能导致该目录下的 `Languages` 不被正确合并（表现为配方只显示英文）。本模组改用显式的 `Common/` 子文件夹彻底规避该问题。
-
-> ⚠️ `LoadFolders.xml` 中**不要**用 `<li>.</li>` 表示根目录。反编译 `ModContentPack.InitLoadFolders` 可知：只有 `/` 或 `\` 会被解析成根目录（`folderName = ""`），写 `.` 会得到 `…\ModName\.` 这种非规范路径，可能导致该目录下的 `Languages` 不被正确合并（表现为配方只显示英文）。本模组改用显式的 `Common/` 子文件夹彻底规避该问题。
+> ⚠️ `LoadFolders.xml` 里**不要**用 `<li>.</li>` 表示根目录，改用显式的子文件夹名（本模组用 `Common`）。
+> 反编译 `ModContentPack.InitLoadFolders` 可见，它按 `Path.Combine(RootDir, folderName)` 拼路径：
+> 写 `.` 会得到 `…\ModName\.` 这种不规范路径；而写 `/` 更糟 —— `Path.Combine` 会判定它是根路径、
+> 把模组目录整个丢掉。用明确的子文件夹既直观，又不会踩这两个坑。
 
 ---
 
