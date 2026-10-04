@@ -8,7 +8,7 @@
 只装米莉拉本体就能用（15 条配方）；再装米帝拓展会自动解锁另外 6 条。
 
 - packageId：`gnh.cn.cys.milirakeycomponents`
-- 支持版本：1.6 ｜ 模组版本：1.6.4
+- 支持版本：1.6 ｜ 模组版本：1.6.6
 - 必需依赖：米莉拉天空精灵（`Ancot.MiliraRace`，工坊 3256974620）
 - 可选依赖：米莉拉派系：米莉拉帝国（`Ariandel.MiliraImperium`，工坊 3588393755）
 

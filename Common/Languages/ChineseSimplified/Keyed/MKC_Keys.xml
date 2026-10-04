@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <MKC_SettingsCategory>米莉拉：关键件制造</MKC_SettingsCategory>
   <MKC_SimpleMode>简单模式</MKC_SimpleMode>
@@ -6,4 +6,8 @@
   <MKC_CurrentEffect>当前效果：{0}</MKC_CurrentEffect>
   <MKC_On>简单模式已启用（材料减半、工作量 20%）</MKC_On>
   <MKC_Off>平衡模式（作者默认配平）</MKC_Off>
+
+  <!-- 设置窗口拿不到设置对象时的兜底提示（正常不会出现） -->
+  <MKC_SettingsUnavailable>设置暂时不可用，请重启游戏后再试。</MKC_SettingsUnavailable>
+
 </LanguageData>

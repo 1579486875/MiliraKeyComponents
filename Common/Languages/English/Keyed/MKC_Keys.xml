@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <MKC_SettingsCategory>Milira: Key Component Crafting</MKC_SettingsCategory>
   <MKC_SimpleMode>Simple Mode</MKC_SimpleMode>
@@ -6,4 +6,8 @@
   <MKC_CurrentEffect>Current: {0}</MKC_CurrentEffect>
   <MKC_On>Simple Mode enabled (half ingredients, 20% work)</MKC_On>
   <MKC_Off>Balanced (author's default tuning)</MKC_Off>
+
+  <!-- 设置窗口拿不到设置对象时的兜底提示（正常不会出现） -->
+  <MKC_SettingsUnavailable>Settings are unavailable; please restart the game.</MKC_SettingsUnavailable>
+
 </LanguageData>
