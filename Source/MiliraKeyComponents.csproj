@@ -16,9 +16,16 @@
          ├── Common\Assemblies\MiliraKeyComponents.dll   ← 编译产物
          └── Source\MiliraKeyComponents.csproj           ← 本文件
 
-   本程序集【不依赖 Harmony】：
-     它只在启动阶段与设置变更时直接改写 DefDatabase 里的 RecipeDef 数值，
-     不做任何方法级补丁，因此不需要 brrainz.harmony。
+   本程序集【依赖 Harmony】（1.6.7 起）：
+     · 启动阶段与设置变更时直接改写 RecipeDef 数值（材料数、工作量、可在哪些工作台制作）；
+     · 另挂一个 Harmony Postfix 到 Verse.Bill.GetWorkAmount，用来实现
+       「同一个配方：在米莉拉工作台上原速、在原版工作台上按 2.5 倍工时」。
+
+     为什么这一步非用 Harmony 不可：RecipeDef.workAmount 是**配方自己的字段**，
+     改它会让所有工作台一起变，没有任何办法只在某一个工作台上延长。
+     而 Bill 带着 billStack.billGiver（也就是那台工作台），
+     所以只能在 Bill.GetWorkAmount 这一层做区分。
+     依赖与排序见 About\About.xml 的 modDependencies / loadAfter。
 
    编译（命令行）：
      dotnet build "Source\MiliraKeyComponents.csproj" -c Release `
@@ -32,7 +39,7 @@
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <AssemblyName>MiliraKeyComponents</AssemblyName>
-    <Version>1.6.6</Version>
+    <Version>1.6.7</Version>
     <RootNamespace>MiliraKeyComponents</RootNamespace>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>disable</ImplicitUsings>
@@ -53,18 +60,29 @@
   <PropertyGroup>
     <RimWorldDir Condition="'$(RimWorldDir)' == ''">D:\steam\steamapps\common\RimWorld</RimWorldDir>
     <ManagedDir>$(RimWorldDir)\RimWorldWin64_Data\Managed</ManagedDir>
+    <!-- 0Harmony.dll 不在游戏 Managed 目录里，它由 Harmony 模组提供。
+         默认按本机的工坊路径去找；换机器时用 -p:HarmonyDir="...\Assemblies" 覆盖。 -->
+    <HarmonyDir Condition="'$(HarmonyDir)' == ''">D:\steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies</HarmonyDir>
   </PropertyGroup>
 
   <!-- 路径不存在时给中文报错，而不是让编译器抛一句难懂的找不到引用 -->
   <Target Name="MKCValidatePaths" BeforeTargets="ResolveAssemblyReferences">
     <Error Condition="!Exists('$(ManagedDir)\Assembly-CSharp.dll')"
            Text="找不到 RimWorld 程序集：$(ManagedDir)\Assembly-CSharp.dll。请用 -p:RimWorldDir=&quot;你的 RimWorld 安装目录&quot; 指定正确路径。" />
+    <Error Condition="!Exists('$(HarmonyDir)\0Harmony.dll')"
+           Text="找不到 0Harmony.dll：$(HarmonyDir)\0Harmony.dll。它由 Harmony 模组（工坊 2009463077）提供，请用 -p:HarmonyDir=&quot;...\Assemblies&quot; 指定正确路径。" />
   </Target>
 
   <ItemGroup>
     <!-- RimWorld 本体 -->
     <Reference Include="Assembly-CSharp">
       <HintPath>$(ManagedDir)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+
+    <!-- Harmony（brrainz.harmony，工坊 2009463077） -->
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDir)\0Harmony.dll</HintPath>
       <Private>false</Private>
     </Reference>
 

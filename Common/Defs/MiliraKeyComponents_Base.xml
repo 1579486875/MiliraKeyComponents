@@ -292,7 +292,10 @@
             <li>Gold</li>
           </thingDefs>
         </filter>
-        <count>20</count>
+        <!-- Gold 在原版带着 smallVolume=true，所以这类配方的 count 单位是「10 个」：
+                     count 2 就是实际 20 个金。这行原先是 20，等于要 20 个金，
+                     已于 2026-10-04 按「期望个数 ÷ 10」修正为 2。改这里之前请先读本文件顶部的说明。 -->
+        <count>2</count>
       </li>
     </ingredients>
     <products>

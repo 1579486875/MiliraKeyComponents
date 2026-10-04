@@ -70,7 +70,10 @@
             <li>Gold</li>
           </thingDefs>
         </filter>
-        <count>75</count>
+        <!-- Gold 在原版带着 smallVolume=true，所以这类配方的 count 单位是「10 个」：
+                     count 2 就是实际 20 个金。这行原先是 75，等于要 75 个金，
+                     已于 2026-10-04 按「期望个数 ÷ 10」修正为 7.5。改这里之前请先读本文件顶部的说明。 -->
+        <count>7.5</count>
       </li>
       <li>
         <filter>
@@ -140,7 +143,10 @@
             <li>Gold</li>
           </thingDefs>
         </filter>
-        <count>45</count>
+        <!-- Gold 在原版带着 smallVolume=true，所以这类配方的 count 单位是「10 个」：
+                     count 2 就是实际 20 个金。这行原先是 45，等于要 45 个金，
+                     已于 2026-10-04 按「期望个数 ÷ 10」修正为 4.5。改这里之前请先读本文件顶部的说明。 -->
+        <count>4.5</count>
       </li>
       <li>
         <filter>
@@ -194,7 +200,10 @@
             <li>Gold</li>
           </thingDefs>
         </filter>
-        <count>150</count>
+        <!-- Gold 在原版带着 smallVolume=true，所以这类配方的 count 单位是「10 个」：
+                     count 2 就是实际 20 个金。这行原先是 150，等于要 150 个金，
+                     已于 2026-10-04 按「期望个数 ÷ 10」修正为 15。改这里之前请先读本文件顶部的说明。 -->
+        <count>15</count>
       </li>
     </ingredients>
     <products>

@@ -78,12 +78,15 @@ namespace MiliraKeyComponents
             listing.CheckboxLabeled(
                 Tr("MKC_SimpleMode", "Simple Mode"),
                 ref Settings.simpleMode,
-                Tr("MKC_SimpleModeDesc", "Halves ingredient requirements and drops work amount to 20%."));
+                Tr("MKC_SimpleModeDesc",
+                    "Halves ingredient requirements, drops work amount to 20%, "
+                    + "and also lets these items be crafted at a vanilla workbench "
+                    + "(machining table or fabrication bench), at 2.5x the work."));
 
             listing.Gap(6f);
             listing.Label(Tr("MKC_CurrentEffect", "Current: {0}").Formatted(
                 Settings.simpleMode
-                    ? Tr("MKC_On", "Simple Mode enabled (half ingredients, 20% work)")
+                    ? Tr("MKC_On", "Simple Mode enabled (half ingredients, 20% work, vanilla workbench available at 2.5x work)")
                     : Tr("MKC_Off", "Balanced (author's default tuning)")));
 
             listing.End();
@@ -201,6 +204,47 @@ namespace MiliraKeyComponents
         /// </summary>
         private const float MinIngredientCount = 1f;
 
+        // ──────────────────────────────────────────────────────────────────
+        // 简单模式的第二半：让这些配方也能在**原版工作台**上做
+        // ──────────────────────────────────────────────────────────────────
+        //
+        // 简单模式打开时，除了减料减工时，还会给每条配方**额外**挂一台原版工作台。
+        // 这样就不必先造出米莉拉那几台机器（通用工作台 / 太阳熔炉 / 重力织机）。
+        // 代价是那边工时更长（2.5 倍），由 MKC_VanillaBench 的 Harmony 补丁负责。
+        //
+        // 挂哪一台，取决于**台面格数够不够放下材料**：
+        // 配方的每一种材料都要占一格（材料数量超过堆叠上限时会占更多格），
+        // 所以材料种类数直接决定需要几格。
+        //
+        //   TableMachining   机械加工台 (3,1) = 3 格  → 装 2~3 种材料的小配方
+        //   FabricationBench 精密装配台 (5,2) = 10 格 → 装 4~6 种材料的大配方、以及全部批量配方
+        //
+        // 批量配方一律走大工作台：它们的材料**数量**大得多，
+        // 光是日凌晶可能就占两三格，3 格的小台子放不下。
+
+        /// <summary>材料种类数达到这个值时，改用台面更大的精密装配台。</summary>
+        private const int LargeBenchIngredientThreshold = 4;
+
+        /// <summary>小号原版工作台（机械加工台）的 defName。必须与 MKC_VanillaBench 里的名单一致。</summary>
+        private const string VanillaBenchSmall = "TableMachining";
+
+        /// <summary>大号原版工作台（精密装配台）的 defName。必须与 MKC_VanillaBench 里的名单一致。</summary>
+        private const string VanillaBenchLarge = "FabricationBench";
+
+        /// <summary>批量配方 defName 的后缀，用来识别它们（数量大，一律用大工作台）。</summary>
+        private const string BulkSuffix = "_Bulk";
+
+        /// <summary>
+        /// 每个配方**原本**的 recipeUsers（它能在哪些工作台上做）。
+        ///
+        /// 为什么要抄这一份：简单模式会给它追加一台原版工作台，
+        /// 而玩家把开关拨来拨去的时候，必须能干干净净回到原始状态 ——
+        /// 否则每开一次就多挂一台，或者关掉之后原版工作台还赖着不走。
+        /// 跟材料数、工作量一样，做法都是「从底稿重建」，而不是在现值上改。
+        /// </summary>
+        private static readonly Dictionary<string, List<ThingDef>> originalRecipeUsers =
+            new Dictionary<string, List<ThingDef>>();
+
         /// <summary>
         /// 只处理名字以 GNH_Recipe_ 开头的配方。这是第一道筛子；
         /// 第二道筛子是下面那个「来源模组必须是本模组」的检查 —— 两道都过才动手。
@@ -286,11 +330,25 @@ namespace MiliraKeyComponents
         private static bool tuneErrorLogged;
 
         /// <summary>
+        /// 「定期复查时抛异常」的警告是否已经打过。
+        ///
+        /// 这一条必须去重，理由和上面几个一样但更要紧：NeedsReapply 挂在
+        /// 300 tick（约 5 秒）的定期复查上，一旦某个配方被第三方改坏、每次都抛，
+        /// 普通 Log.Warning 会变成一局几千条刷屏 —— 这正是本模组历史上修过的事故类型，
+        /// 当时补了 skippedLogged / diagLogged / tuneErrorLogged 三处，唯独漏了这里。
+        /// </summary>
+        private static bool recheckErrorLogged;
+
+        /// <summary>
         /// 判断一个配方是不是「本模组自己加的」。两个条件缺一不可：
         /// 名字以 GNH_Recipe_ 开头，并且它的来源模组就是本模组。
         /// 只查名字是不够的 —— 前缀这种东西别的模组也可能撞上。
+        ///
+        /// 用 internal 而不是 private：MKC_VanillaBenchPatch 那个 Harmony 补丁也要用它。
+        /// 那个补丁挂在 Verse.Bill.GetWorkAmount 上，而那个方法是**所有**配方共用的，
+        /// 必须靠这个方法把「本模组的配方」从原版与第三方配方里筛出来。
         /// </summary>
-        private static bool IsOurRecipe(RecipeDef recipe)
+        internal static bool IsOurRecipe(RecipeDef recipe)
         {
             if (recipe.defName == null) return false;
             if (!recipe.defName.StartsWith(RecipePrefix)) return false;
@@ -478,6 +536,12 @@ namespace MiliraKeyComponents
                         recipe.ingredients[i].SetBaseCount(ExpectedCount(counts[i], simple));
                     }
 
+                    // 简单模式下，再给这条配方挂一台原版工作台（平衡模式则只保留原本那些）。
+                    // 这一步同样是「从底稿重建」而不是在现值上追加，
+                    // 所以开关来回拨多少次都不会越挂越多。
+                    // counts.Count 就是材料种类数，用来决定选大台子还是小台子。
+                    ApplyRecipeUsers(recipe, counts.Count, simple);
+
                     // 这一行清的是 Def 的「名字缓存」，跟配方数值没关系。
                     // 游戏为了省事，会把 Def 首字母大写的名字（LabelCap）算一次就存着；
                     // Verse.Def.ClearCachedData 这个方法从头到尾只干一件事 ——
@@ -634,12 +698,28 @@ namespace MiliraKeyComponents
                             return true;
                         }
                     }
+
+                    // 工作台名单也要对一遍 —— 简单模式会额外挂一台原版工作台，
+                    // 那是玩家能看见、能感知的一部分效果，不能只盯着数值。
+                    if (!RecipeUsersMatch(recipe, counts.Count, simple))
+                    {
+                        return true;
+                    }
                 }
                 return false;
             }
             catch (System.Exception ex)
             {
-                Verse.Log.Warning("[MKC] Re-check failed, forcing re-apply: " + ex.Message);
+                // 去重：本方法每 300 tick（约 5 秒）跑一次，一旦某个配方被第三方改坏、
+                // 每次都抛，普通 Warning 会变成一局几千条刷屏。
+                // 只报第一次，并且把完整异常带上 —— 原来只打 ex.Message，
+                // 堆栈全丢了，事后根本查不出是哪条配方出的问题。
+                if (!recheckErrorLogged)
+                {
+                    recheckErrorLogged = true;
+                    Verse.Log.Warning("[MKC] Re-check failed, forcing re-apply "
+                        + "(this warning is only shown once per session):\n" + ex);
+                }
                 return true;
             }
         }
@@ -655,6 +735,13 @@ namespace MiliraKeyComponents
         /// </summary>
         private static bool BaselineIsStale(List<RecipeDef> recipes)
         {
+            // 先比条目数：底稿里少一条（例如运行期新增了一个 GNH_Recipe_ 配方）时，
+            // 只看「清单里的实例是不是同几个」是发现不了的 —— 下面那个 foreach 会逐个
+            // ReferenceEquals 通过、然后返回「没过期」。后果是那条新配方永远抄不到底稿、
+            // 永远被跳过，而 NeedsReapply 又一直返回 true，
+            // 于是变成**每 5 秒全量 Apply 一次，直到退出游戏**。
+            if (capturedDefs.Count != recipes.Count) return true;
+
             foreach (RecipeDef recipe in recipes)
             {
                 if (!capturedDefs.TryGetValue(recipe.defName, out RecipeDef known)) return true;
@@ -670,6 +757,12 @@ namespace MiliraKeyComponents
             originalCounts.Clear();
             capturedDefs.Clear();
             capturedIngredientNames.Clear();
+            originalRecipeUsers.Clear();
+
+            // 先降旗、再抄。抄的过程中万一某条配方结构坏掉抛出来，
+            // 旗子已经放下了，就不会留下「四张表是空的、旗子却说已经抄好了」这种半死状态
+            //（那会让后续每次 Apply 都失败一次、还每次都刷一条日志）。
+            baselineCaptured = false;
             CaptureOriginals(recipes);
             baselineCaptured = true;
         }
@@ -681,9 +774,20 @@ namespace MiliraKeyComponents
         /// </summary>
         private static bool IngredientsMatch(RecipeDef recipe, int expectedCount)
         {
-            // 结构防御：Verse.RecipeDef.ingredients 反编译是 public List<IngredientCount> ingredients;
-            // （没有初始化器），XML 缺 <ingredients> 节点时它就是 null —— 直接取 .Count 会 NPE。
-            // 这里当作「对不上」返回 false，调用方本来就有对应的跳过逻辑。
+            // 结构防御（**注意：这是纯保险，正常路径永远不会触发**）。
+            //
+            // 2026-10-04 用反编译核对 1.6 的实际声明，这两个字段都**带初始化器**：
+            //     public List<IngredientCount> ingredients = new List<IngredientCount>();
+            //     public ThingFilter filter = new ThingFilter();
+            // 所以正常情况下它们不可能是 null。
+            //
+            // 早先这里的注释写的是「没有初始化器，XML 缺 <ingredients> 节点时就是 null」——
+            // 那与事实不符，已更正。错误注释的危害不只是误导：它还是
+            //「Re-check failed 那条警告不可能出现」这个判断的依据，会让人放心地把
+            // 日志去重当成多余（实际上第三方 patch 用反射把字段置 null、或将来原版改法变了，
+            // 都可能真的走到这里）。
+            //
+            // 检查本身保留着，代价只有一次引用比较。
             if (recipe.ingredients == null) return false;
             if (recipe.ingredients.Count != expectedCount) return false;
             if (!capturedIngredientNames.TryGetValue(recipe.defName, out List<string> names)) return false;
@@ -721,13 +825,32 @@ namespace MiliraKeyComponents
         {
             foreach (RecipeDef recipe in recipes)
             {
-                originalWork[recipe.defName] = recipe.workAmount;
-                capturedDefs[recipe.defName] = recipe;
+                // 先做结构检查、把数据收集齐，**确认这条配方是完整的**，再往四张表里写。
+                //
+                // 为什么要这样（2026-10-04 审计）：本方法的调用方 Recapture 已经把
+                // baselineCaptured 放下来了，如果这里直接抛出去，就会变成
+                // 「每次 Apply 都失败 + 每 5 秒刷一条日志」的稳定故障态。
+                // 单条配方坏掉只该跳过它自己 —— 之后在 Apply 里它会因查不到底稿而被跳过
+                //（skipped++），那是安全的。
+                if (recipe.ingredients == null)
+                {
+                    continue;
+                }
 
                 List<float> counts = new List<float>(recipe.ingredients.Count);
                 List<string> names = new List<string>(recipe.ingredients.Count);
+                bool broken = false;
+
                 foreach (IngredientCount ingredient in recipe.ingredients)
                 {
+                    if (ingredient == null)
+                    {
+                        // 列表里夹了 null：整条配方作废，不要只跳过这一个材料 ——
+                        // 那样 counts 与 names 的长度会和实际对不上。
+                        broken = true;
+                        break;
+                    }
+
                     // 材料数量存在 IngredientCount 的 count 里，但 count 是私有字段，外面读不到，
                     // 得走公开的读取口 GetBaseCount()（配对的写入口是 SetBaseCount()）。
                     counts.Add(ingredient.GetBaseCount());
@@ -736,9 +859,244 @@ namespace MiliraKeyComponents
                         ? ingredient.FixedIngredient.defName
                         : "?");
                 }
+
+                if (broken)
+                {
+                    continue;
+                }
+
+                // 到这里才写进表里：要么整条都对，要么这条就不进底稿，
+                // 绝不会出现「表里写了一半」的状态。
+                originalWork[recipe.defName] = recipe.workAmount;
+                capturedDefs[recipe.defName] = recipe;
                 originalCounts[recipe.defName] = counts;
                 capturedIngredientNames[recipe.defName] = names;
+
+                // recipeUsers 也一起抄：简单模式会往里追加一台原版工作台，
+                // 关掉时得能原样还回去。
+                // recipeUsers 有可能是 null，统一存成空列表，后面用起来就不用到处判空。
+                originalRecipeUsers[recipe.defName] = (recipe.recipeUsers != null)
+                    ? new List<ThingDef>(recipe.recipeUsers)
+                    : new List<ThingDef>();
             }
+        }
+
+        // ──────────────────────────────────────────────────────────────────
+        // 简单模式第二半：让它也能在原版工作台上做
+        // ──────────────────────────────────────────────────────────────────
+
+        /// <summary>
+        /// 从底稿重建这条配方的 recipeUsers，然后在简单模式下**追加**一台原版工作台。
+        ///
+        /// 为什么每次都从底稿重建，而不是「缺就加、不缺就跳过」：
+        /// 后者在玩家关掉简单模式之后不会把原版工作台摘掉 —— 于是
+        ///「开关明明关了，却还能在原版工作台上做」，界面说的和实际做的不一致。
+        /// 重建的代价极小（一条配方顶多几个元素），换来的是开关状态与实际效果永远一致。
+        /// </summary>
+        /// <param name="recipe">要处理的配方。</param>
+        /// <param name="ingredientKinds">这条配方有几种材料，用来决定挂大台子还是小台子。</param>
+        /// <param name="simple">当前是不是简单模式。</param>
+        private static void ApplyRecipeUsers(RecipeDef recipe, int ingredientKinds, bool simple)
+        {
+            if (!originalRecipeUsers.ContainsKey(recipe.defName))
+            {
+                // 底稿里没有它（正常走不到这儿 —— CaptureOriginals 里几张表是一起写的）。
+                // 保守起见什么都不动：宁可少挂一台工作台，也不要把人家的配方改坏。
+                return;
+            }
+
+            // 整体换掉，而不是原地增删：这样即使别处还持有旧列表的引用，
+            // 也不会看到「改到一半」的状态。
+            recipe.recipeUsers = BuildExpectedRecipeUsers(recipe, ingredientKinds, simple);
+
+            // 名单变了，必须把这两张工作台的「配方菜单缓存」清掉 ——
+            // 否则玩家在游戏里根本看不到变化，非得重启不可。详见 InvalidateRecipeMenu。
+            // 两张都清：切换模式时，配方可能在它们之间来回搬。
+            InvalidateRecipeMenu(DefDatabase<ThingDef>.GetNamedSilentFail(VanillaBenchSmall));
+            InvalidateRecipeMenu(DefDatabase<ThingDef>.GetNamedSilentFail(VanillaBenchLarge));
+        }
+
+        /// <summary>
+        /// 算出「当前设置下，这条配方的 recipeUsers 应该长什么样」。
+        ///
+        /// Apply 与 RecipeUsersMatch **都调它** —— 这是刻意的：
+        /// 两处各写一份的话，只要有一处改了、另一处没跟上，立刻就会变成
+        /// 「永远认为不对 → 每 5 秒全量 Apply 一遍直到退出游戏」，
+        /// 或者反过来「永远认为对 → 该重算的时候不重算」。
+        ///
+        /// （2026-10-05 复审确实查出了这种口径漂移：Apply 用的是「已经有了就不再加」，
+        ///   而 Match 无条件期望「比原始多一台」；一旦某条配方原本就把目标工作台
+        ///   写在了 recipeUsers 里（完全可能 —— 别的模组加过），两边就永远对不上。
+        ///   现在把这段判断收进一个方法，从结构上让它不可能再漂移。）
+        /// </summary>
+        private static List<ThingDef> BuildExpectedRecipeUsers(RecipeDef recipe, int ingredientKinds, bool simple)
+        {
+            List<ThingDef> result = new List<ThingDef>();
+
+            if (originalRecipeUsers.TryGetValue(recipe.defName, out List<ThingDef> original))
+            {
+                // 先还原成原始状态。这一步在**两种模式下都要做**。
+                for (int i = 0; i < original.Count; i++)
+                {
+                    if (original[i] != null)
+                    {
+                        result.Add(original[i]);
+                    }
+                }
+            }
+
+            if (simple)
+            {
+                ThingDef bench = PickVanillaBench(recipe, ingredientKinds);
+                if (bench != null && !result.Contains(bench))
+                {
+                    result.Add(bench);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 挑一台合适的原版工作台：
+        ///   · 材料种类少、又不是批量配方 → 机械加工台（3 格）；
+        ///   · 其余（材料多、或者是批量）→ 精密装配台（10 格）。
+        ///
+        /// 为什么批量一律用大的：批量的材料**数量**大得多，光一种材料就可能占两三格，
+        /// 而机械加工台总共只有 3 格，放不下。这一点只看种类数是看不出来的，
+        /// 所以另外按 defName 后缀单独判一次。
+        /// </summary>
+        private static ThingDef PickVanillaBench(RecipeDef recipe, int ingredientKinds)
+        {
+            bool isBulk = recipe.defName != null
+                && recipe.defName.EndsWith(BulkSuffix, System.StringComparison.Ordinal);
+
+            bool needLarge = isBulk || ingredientKinds >= LargeBenchIngredientThreshold;
+            string wanted = needLarge ? VanillaBenchLarge : VanillaBenchSmall;
+
+            // 用 GetNamedSilentFail：原版将来要是改了名字，这里安静地返回 null，
+            // 调用方按「没有原版工作台可用」处理 —— 配方仍然能在米莉拉工作台上做，
+            // 不会因为这一层就整条失效。
+            return DefDatabase<ThingDef>.GetNamedSilentFail(wanted);
+        }
+
+        /// <summary>
+        /// Verse.ThingDef 里那个「配方菜单缓存」字段的反射句柄。第一次用时查一次，之后复用。
+        /// </summary>
+        private static System.Reflection.FieldInfo allRecipesField;
+
+        /// <summary>上面那个反射是否已经查过。与字段本身分开记 —— 查不到也是一种「查过了」。</summary>
+        private static bool allRecipesFieldResolved;
+
+        /// <summary>「清缓存失败」的错误是否已经打过（本方法每次 Apply 都会调用，不能刷屏）。</summary>
+        private static bool recipeCacheErrorLogged;
+
+        /// <summary>
+        /// 让某张工作台的「配方菜单缓存」失效。
+        ///
+        /// 【为什么必须做这一件事】（2026-10-05 复审查出的 P0）
+        ///
+        /// RimWorld 的 ThingDef 有个私有字段 allRecipesCached：
+        ///
+        ///     public List&lt;RecipeDef&gt; AllRecipes
+        ///     {
+        ///         get {
+        ///             if (allRecipesCached == null) { ...扫 recipes + 所有 recipeUsers 含 this 的配方... }
+        ///             return allRecipesCached;
+        ///         }
+        ///     }
+        ///
+        /// 而工作台的「添加制作清单」菜单正是遍历 SelTable.def.AllRecipes 来的。
+        /// 关键问题：**这个缓存全程序集没有任何清空点** ——
+        /// Verse.Def.ClearCachedData() 只清 cachedLabelCap，ThingDef 也没有覆写它。
+        ///
+        /// 于是只要有人在改名单之前访问过一次 AllRecipes（比如玩家先打开过制作菜单），
+        /// 之后我们对 recipeUsers 的增删就**永远不会反映到菜单上**，表现为：
+        ///   · 玩了一会儿再打开简单模式 → 菜单里看不到那几台新工作台，必须重启游戏；
+        ///   · 关掉简单模式 → 配方仍然留在菜单里、而且还能做（工时按 1 倍算），白嫖；
+        ///   · 任何模组先碰过这两台的 AllRecipes → 简单模式永久失效。
+        ///
+        /// 所以每次改完 recipeUsers 都要把它清成 null：下次访问会自己重建，
+        /// 重建就是扫一遍全部配方（几千条），微秒级，完全不用担心。
+        /// </summary>
+        private static void InvalidateRecipeMenu(ThingDef bench)
+        {
+            if (bench == null)
+            {
+                return;
+            }
+
+            try
+            {
+                if (!allRecipesFieldResolved)
+                {
+                    allRecipesFieldResolved = true;
+                    allRecipesField = typeof(ThingDef).GetField(
+                        "allRecipesCached",
+                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                }
+
+                if (allRecipesField != null)
+                {
+                    allRecipesField.SetValue(bench, null);
+                }
+                else if (!recipeCacheErrorLogged)
+                {
+                    // 查不到字段（原版改了名字）：不影响配方数值，只影响菜单刷新时机，
+                    // 所以报一次 Warning 说清楚后果就够了，不必当成错误。
+                    recipeCacheErrorLogged = true;
+                    Verse.Log.Warning("[MKC] Could not find ThingDef.allRecipesCached; "
+                        + "changes to the vanilla workbench recipe list may not show up until the game is restarted.");
+                }
+            }
+            catch (System.Exception ex)
+            {
+                if (!recipeCacheErrorLogged)
+                {
+                    recipeCacheErrorLogged = true;
+                    Verse.Log.Error("[MKC] Failed to invalidate the workbench recipe-menu cache; "
+                        + "the recipe list on the vanilla workbench may be stale until restart.\n" + ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 检查这条配方的 recipeUsers 是不是已经处在「当前设置下应有的样子」，
+        /// 给 NeedsReapply 判断要不要重跑一遍 Apply。
+        ///
+        /// 少了这项检查会怎样：玩家拨开关时本来就会立刻 Apply 一次（见 MKC_Mod），
+        /// 所以日常几乎看不出问题；但万一有别的模组把 recipeUsers 改回去，
+        /// 定期复查会认为「数值都对、不用重算」，那条捷径就悄悄消失了 ——
+        /// 而且是没有任何提示的那种消失。
+        /// </summary>
+        private static bool RecipeUsersMatch(RecipeDef recipe, int ingredientKinds, bool simple)
+        {
+            if (!originalRecipeUsers.ContainsKey(recipe.defName))
+            {
+                return false;
+            }
+
+            // 直接和「应该长什么样」逐项比对 —— 用的就是 Apply 调的那个方法，
+            // 所以这两处从结构上不可能再对不上（详见 BuildExpectedRecipeUsers 的说明）。
+            List<ThingDef> expected = BuildExpectedRecipeUsers(recipe, ingredientKinds, simple);
+            List<ThingDef> actual = recipe.recipeUsers;
+
+            if (actual == null || actual.Count != expected.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < expected.Count; i++)
+            {
+                // 用 ReferenceEquals 而不是 ==：这里比的是「是不是同一个 Def 对象」，
+                // 与 HashSet/List 那边的引用比较口径保持一致。
+                if (!ReferenceEquals(actual[i], expected[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -771,6 +1129,14 @@ namespace MiliraKeyComponents
         /// </summary>
         [Unsaved]
         private bool checkedOnce;
+
+        /// <summary>
+        /// 「定期应用失败」的错误日志是否已经打过。
+        ///
+        /// 本组件每 300 tick（约 5 秒）复查一次，一旦出错就是每 5 秒一条 Error ——
+        /// 一局下来几千条。所以只报第一次，完整异常照样带上，方便定位。
+        /// </summary>
+        private static bool applyErrorLogged;
 
         /// <summary>距离上一次复查过去了多少个 tick。</summary>
         private int ticksSinceCheck;
@@ -824,9 +1190,15 @@ namespace MiliraKeyComponents
             }
             catch (System.Exception ex)
             {
-                // 这里出了错也不该影响游戏运行，记一条就够了。
+                // 去重：本方法同样每 300 tick（约 5 秒）跑一次，
+                // 出错时不能变成一局几千条刷屏。
                 // 下次复查还会再试一遍，所以不会失败一次就永久放弃。
-                Verse.Log.Error("[MKC] Re-applying settings on game start failed.\n" + ex);
+                if (!applyErrorLogged)
+                {
+                    applyErrorLogged = true;
+                    Verse.Log.Error("[MKC] Re-applying settings on game start failed "
+                        + "(this error is only shown once per session):\n" + ex);
+                }
             }
         }
     }
@@ -851,6 +1223,27 @@ namespace MiliraKeyComponents
             // 悄无声息的失败，变成日志里一条看得见、能查的记录。
             // （这里不写死「一共有几个配方」这种数字：数量会随版本变化，
             //   所以 Apply 里是按「前缀 + 来源模组」两道筛子去扫的，见那一段。）
+            // 这里刻意分成**两段独立的 try**（2026-10-05 复审后改的）：
+            // 「装 Harmony 补丁」和「改配方数值」是两件互不依赖的事，
+            // 任何一件失败都不该连累另一件。
+            // 早先它们共用一个 try，于是 Apply 一抛异常，那个补丁就整局都装不上，
+            // 而玩家只会看到一条「配方没改」的错误，完全想不到工时功能也一起没了。
+            try
+            {
+                // 把「原版工作台工时延长」那个 Harmony 补丁装上。
+                //
+                // 为什么放在这里、而不是 MKC_Mod 的构造函数里：构造函数跑得太早，
+                // 那时候 Def 还没读进来。而这个类带 [StaticConstructorOnStartup]，
+                // 由 CLR 保证一个进程只跑一次 —— 天然就是幂等的，
+                // 不会像「每次构造模组对象都 PatchAll 一遍」那样把补丁叠成好几层。
+                MKC_VanillaBench.Install();
+            }
+            catch (System.Exception ex)
+            {
+                Verse.Log.Error("[MKC] Installing the vanilla-workbench work penalty failed; "
+                    + "recipes still work, just without the 2.5x penalty on vanilla workbenches.\n" + ex);
+            }
+
             try
             {
                 MKC_RecipeTuner.Apply();

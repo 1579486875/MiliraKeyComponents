@@ -6,7 +6,7 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <modVersion>1.6.6</modVersion>
+  <modVersion>1.6.7</modVersion>
   <modIconPath IgnoreIfNoMatchingField="True">MKC/ModIcon</modIconPath>
   <modDependencies>
     <li>
@@ -14,8 +14,14 @@
       <displayName>Milira Race</displayName>
       <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3256974620</steamWorkshopUrl>
     </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
   </modDependencies>
   <loadAfter>
+    <li>brrainz.harmony</li>
     <li>Ancot.MiliraRace</li>
     <li>Ariandel.MiliraImperium</li>
   </loadAfter>
@@ -55,14 +61,40 @@
 
 【简单模式】
 
-模组设置里有个开关，打开后材料减半、工作量降到 20%。不开就是上面这套默认配平。
+模组设置里有个开关，打开后会同时给三样好处：
+
+  1. 材料减半（向上取整，至少留 1 个，绝不会比原值多）；
+  2. 工作量降到 20%；
+  3. 额外开放「原版工作台」这条捷径 —— 不必先造出米莉拉的那几台机器：
+
+     · 机械加工台（台面 3 格）—— 共 6 条单件配方：
+       谐振子、职阶许可：士兵 / 骑士 / 主教 / 战车、金色米莉拉之羽
+     · 精密装配台（台面 10 格）—— 共 15 条：
+       职阶许可：国王 / 王后、太阳熔炉炉心模型、灵能核心、卡冈都亚核心，
+       以及全部 6 条批量配方
+
+     怎么分的：按配方需要**几种材料**来选台面够不够大的那张
+     （每种材料占一格，批量配方的数量大、一律走大台子）。
+
+     作为代价，在原版工作台上做要花 2.5 倍工时；在米莉拉自己的工作台上做，
+     工时永远是作者设计的原值，不受这个系数影响。
+     系数写死在 MKC_VanillaBench.WorkMultiplier 这一个常量里，想调只改那一行。
+
+不开就是上面这套默认配平，原版工作台那条途径也不会出现。
 
 【安装】
 
-需要米莉拉天空精灵（本体），放在它后面加载就行。
+需要米莉拉天空精灵（本体）与 Harmony，放在它们后面加载就行。
 装了米莉拉帝国拓展会自动多出 3 种引力织造器配方（单件版与批量版合计 6 条），
 没装也不报错，只是少那 6 条。
-不需要 Harmony。旧存档可以直接装，也可以随时删掉。
+旧存档可以直接装，也可以随时删掉 —— 本补丁不改存档结构，只动 Def 数值与工作台名单。
+
+【为什么这件事非得用 Harmony】
+
+原版把工时写死在配方自己身上（RecipeDef.workAmount），跟它在哪台工作台上做毫无关系。
+所以「同一个配方：米莉拉工作台原速、原版工作台 2.5 倍」只能靠一个 Harmony 后置补丁
+挂在 Verse.Bill.GetWorkAmount 上来实现 —— 只有那一层能同时看到「哪个配方」和「哪台工作台」。
+这是本模组唯一一处方法级补丁，其余全部只是改 Def 字段。
 
 【语言】
 
