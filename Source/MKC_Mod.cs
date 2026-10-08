@@ -209,7 +209,7 @@ namespace MiliraKeyComponents
         // ──────────────────────────────────────────────────────────────────
         //
         // 简单模式打开时，除了减料减工时，还会给每条配方**额外**挂一台原版工作台。
-        // 这样就不必先造出米莉拉那几台机器（通用工作台 / 太阳熔炉 / 重力织机）。
+        // 这样就不必先造出米莉拉那几台机器（通用工作台 / 太阳熔炉 / 引力织造器）。
         // 代价是那边工时更长（2.5 倍），由 MKC_VanillaBench 的 Harmony 补丁负责。
         //
         // 挂哪一台，取决于**台面格数够不够放下材料**：
@@ -344,7 +344,8 @@ namespace MiliraKeyComponents
         /// 名字以 GNH_Recipe_ 开头，并且它的来源模组就是本模组。
         /// 只查名字是不够的 —— 前缀这种东西别的模组也可能撞上。
         ///
-        /// 用 internal 而不是 private：MKC_VanillaBenchPatch 那个 Harmony 补丁也要用它。
+        /// 用 internal 而不是 private：MKC_VanillaBench 那个 Harmony 补丁也要用它
+        ///（那个类写在 MKC_VanillaBenchPatch.cs 里 —— 类名与文件名不一样，别找错）。
         /// 那个补丁挂在 Verse.Bill.GetWorkAmount 上，而那个方法是**所有**配方共用的，
         /// 必须靠这个方法把「本模组的配方」从原版与第三方配方里筛出来。
         /// </summary>
@@ -432,7 +433,9 @@ namespace MiliraKeyComponents
                 }
                 catch (System.Exception ex)
                 {
-                    Verse.Log.Warning("[MKC] diag failed: " + ex.Message);
+                    // 这里打完整异常（含堆栈）而不是 ex.Message：
+                    // 这本来就是诊断代码，出问题时恰恰要靠堆栈定位到具体哪一行。
+                    Verse.Log.Warning("[MKC] diag failed: " + ex);
                 }
 
                 return; // 一个都没找到 —— 通常是模组被禁用了，或者配方表（Def）还没读进来。
@@ -1127,9 +1130,17 @@ namespace MiliraKeyComponents
         /// 读档走 ScribeExtractor.CreateInstance），所以这个值必然是 false ——
         /// 也就是说这道保险其实用不上，留着无害。
         ///
-        /// [Unsaved] 的真实作用跟存档无关：Verse.GameComponent 自己没有覆写 ExposeData
-        /// （那是个空方法体），本类也没覆写，所以字段根本进不了存档；
-        /// 这个特性是让 XML 注入 / DefInjected 翻译跳过该字段。
+        /// [Unsaved] 的真实作用（2026-10-08 反编译核实后更正）：
+        ///   · 跟存档无关：Verse.GameComponent.ExposeData() 的方法体只有一条 IL 指令（ret），
+        ///     本类也没有覆写它，所以字段本来就进不了存档 —— 这件事不需要 [Unsaved] 保证；
+        ///   · 它唯一的生效点在 Verse.XmlToObjectUtils.DoFieldSearch：反序列化 XML 时若出现
+        ///     同名字段，会打红字「XML error: ... has an Unsaved attribute」并拒绝赋值
+        ///     （除非写成 [Unsaved(allowLoading: true)]）；
+        ///   · 而 GameComponent 的实例是 new / ScribeExtractor.CreateInstance 造出来的，
+        ///     根本不走 XML 反序列化，所以这一条也轮不到。
+        ///   · ⚠ 旧注释写的「让 XML 注入 / DefInjected 翻译跳过该字段」是错的 ——
+        ///     翻译走 DefInjectionUtility，它从不读 [Unsaved]。
+        /// 结论：这个特性在本字段上其实是多余的，留着无害；写清楚是免得后来人照它去理解 [Unsaved]。
         /// </summary>
         [Unsaved]
         private bool checkedOnce;

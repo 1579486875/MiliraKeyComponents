@@ -39,6 +39,8 @@
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <AssemblyName>MiliraKeyComponents</AssemblyName>
+    <!-- 版本号：必须与 About\About.xml 里的 <modVersion> 保持一致（当前 1.6.8）。
+         游戏读的是 About.xml，这个只是给编译产物留个记录 —— 改了那边记得同步这里。 -->
     <Version>1.6.8</Version>
     <RootNamespace>MiliraKeyComponents</RootNamespace>
     <LangVersion>latest</LangVersion>
