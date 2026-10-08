@@ -6,8 +6,8 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <modVersion>1.6.7</modVersion>
-  <modIconPath IgnoreIfNoMatchingField="True">MKC/ModIcon</modIconPath>
+  <modVersion>1.6.8</modVersion>
+  <modIconPath>MKC/ModIcon</modIconPath>
   <modDependencies>
     <li>
       <packageId>Ancot.MiliraRace</packageId>
@@ -109,12 +109,12 @@
 ────────────────
 五、简单模式（可随时开关）
 
-在「选项 → 模组设置 → 米莉拉：关键物品制作补丁」里打开：
+在「选项 → 模组设置 → 米莉拉：关键件制造」里打开：
 
 · 材料消耗降到 50%，工作量降到 20%
 · 关键物品还能在合适的原版工作台制作：
-    材料 4 种以内 → 机械加工台
-    材料更多     → 精密装配台
+    材料 3 种以内 → 机械加工台
+    材料 4 种起   → 精密装配台
   在这些台子上工时 x2.5；米莉拉自己的工作台保持原速
 · 只改本模组的 21 条配方，原版和其他模组完全不受影响
 
@@ -167,7 +167,7 @@
   谐振子、职阶许可：士兵 / 骑士 / 主教 / 战车、金色米莉拉之羽
 · 精密装配台（台面 10 格）—— 共 15 条：
   职阶许可：国王 / 王后、太阳熔炉炉心模型、灵能核心、卡冈都亚核心，
-  以及全部 6 条批量配方
+  以及全部 10 条批量配方
 
 怎么分的：按配方需要几种材料来选台面够不够大的那张
 （每种材料占一格，批量配方的数量大、一律走大台子）。

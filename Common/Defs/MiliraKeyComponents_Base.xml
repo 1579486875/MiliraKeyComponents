@@ -48,7 +48,7 @@
        谐振仪的核心部件。原模组只能向米莉拉商队买（8~15 个/次）。
        材料：日凌晶 4 + 工业零部件 1    成本 ≈ 132 银（市价 100 银）
        前置：通用工作台 (Milira_UniversalPrinter) -->
-  <RecipeDef>
+  <RecipeDef MayRequire="Ancot.MiliraRace">
     <defName>GNH_Recipe_ResonatorCore</defName>
     <label>Print Resonator Core</label>
     <description>Print a resonator core on the Milira universal workbench, using a solar crystal as the resonance medium and an industrial component for the precision assembly.&#xA;The resonator rig these cores are meant to feed has not been released by the Milira base mod yet, so for now a core is just a valuable piece of stock - keep it, or sell it to a trader.</description>
@@ -88,7 +88,7 @@
   <!-- ── 职阶许可：士兵 ────────────────────────────────────────────
        米莉安的身份识别芯片。原渠道：米莉拉商队 / 教会贡品收集者。
        材料：日凌晶 1 + 工业零部件 1    成本 ≈ 57 银（市价 60 银） -->
-  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech,Ancot.MiliraRace">
     <defName>GNH_Recipe_NamePlate_Pawn</defName>
     <label>Etch Class Permit: Pawn</label>
     <description>Etch a Pawn-class identity chip for the Milian, using a solar crystal as the circuit medium and an industrial component as the carrier board.</description>
@@ -128,7 +128,7 @@
   <!-- ── 职阶许可：骑士 ────────────────────────────────────────────
        骑士是武力职阶，线路更密、承载结构更强。
        材料：日凌晶 2 + 工业零部件 2    成本 ≈ 114 银（市价 120 银） -->
-  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech,Ancot.MiliraRace">
     <defName>GNH_Recipe_NamePlate_Knight</defName>
     <label>Etch Class Permit: Knight</label>
     <description>Etch a Knight-class identity chip for the Milian, using a solar crystal as the circuit medium and an industrial component as the carrier board.</description>
@@ -168,7 +168,7 @@
   <!-- ── 职阶许可：主教 ────────────────────────────────────────────
        主教是灵能职阶，线路本身承担更多灵能负载，因此更吃日凌晶。
        材料：日凌晶 3 + 工业零部件 1    成本 ≈ 107 银（市价 120 银） -->
-  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech,Ancot.MiliraRace">
     <defName>GNH_Recipe_NamePlate_Bishop</defName>
     <label>Etch Class Permit: Bishop</label>
     <description>Etch a Bishop-class identity chip for the Milian. As a psionic class, the circuitry itself carries a heavier psionic load, and so it consumes more solar crystal.</description>
@@ -208,7 +208,7 @@
   <!-- ── 职阶许可：战车 ────────────────────────────────────────────
        战车是重装职阶，芯片线路最密、承载件最多。
        材料：日凌晶 4 + 工业零部件 3    成本 ≈ 196 银（市价 200 银） -->
-  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech,Ancot.MiliraRace">
     <defName>GNH_Recipe_NamePlate_Rook</defName>
     <label>Etch Class Permit: Rook</label>
     <description>Etch a Rook-class identity chip for the Milian. As a heavy class, its circuitry is the densest and needs the most carrier components.</description>
@@ -252,7 +252,7 @@
        材料：日盘钢 20 + 日凌晶 15 + 高级零部件 2 + 黄金 20
        成本 ≈ 1335 银（市价 1200 银）
        前置：太阳熔炉建造 (Milira_SunBlastFurnace_Build) -->
-  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech,Ancot.MiliraRace">
     <defName>GNH_Recipe_NamePlate_King</defName>
     <label>Etch Class Permit: King</label>
     <description>Etch a King-class identity chip in the solar furnace. King-class authority leans on military command, and so its chip is built around forged steel and gold.</description>
@@ -313,7 +313,7 @@
        材料：日盘钢 15 + 日凌晶 20 + 高级零部件 2 + 翡翠 20
        成本 ≈ 1270 银（市价 1200 银）
        前置：太阳熔炉建造 (Milira_SunBlastFurnace_Build) -->
-  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech,Ancot.MiliraRace">
     <defName>GNH_Recipe_NamePlate_Queen</defName>
     <label>Etch Class Permit: Queen</label>
     <description>Etch a Queen-class identity chip in the solar furnace. Queen-class authority leans on divine rite and psionics, and so its chip is built around crystals and jade.</description>
@@ -373,7 +373,7 @@
        之后才能在炉内自行铸造（成本与市价基本等值，不产生套利）。
        材料：日盘钢 40 + 日凌晶 30 + 高级零部件 2 + 玻璃钢 20
        成本 ≈ 2050 银（市价 2000 银） -->
-  <RecipeDef>
+  <RecipeDef MayRequire="Ancot.MiliraRace">
     <defName>GNH_Recipe_FurnaceCoreModel</defName>
     <label>Model Sunblast Furnace Core</label>
     <description>Cast a scale model of the sunblast furnace core in the solar furnace itself — the study piece from which the furnace's construction can be learned.</description>

@@ -39,7 +39,7 @@
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <AssemblyName>MiliraKeyComponents</AssemblyName>
-    <Version>1.6.7</Version>
+    <Version>1.6.8</Version>
     <RootNamespace>MiliraKeyComponents</RootNamespace>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>disable</ImplicitUsings>
@@ -53,7 +53,6 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>none</DebugType>
     <Deterministic>true</Deterministic>
-    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
   <!-- ── 路径探测：可被命令行上的同名属性覆盖 ── -->

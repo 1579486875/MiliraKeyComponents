@@ -27,7 +27,7 @@
   <!-- ═══════════ 米莉拉通用工作台（x10 批量）═══════════ -->
 
   <!-- 谐振子 x10：单件 1200 → 批量 10000 -->
-  <RecipeDef>
+  <RecipeDef MayRequire="Ancot.MiliraRace">
     <defName>GNH_Recipe_ResonatorCore_Bulk</defName>
     <label>Print Resonator Core x10</label>
     <description>Print ten resonator cores on the Milira universal workbench in one batch.&#xA;The resonator rig has not been released by the Milira base mod yet, so these cores are only good as stockpile or trade goods for now.</description>
@@ -65,7 +65,7 @@
   </RecipeDef>
 
   <!-- 职阶许可：士兵 x10 -->
-  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech,Ancot.MiliraRace">
     <defName>GNH_Recipe_NamePlate_Pawn_Bulk</defName>
     <label>Etch Class Permit: Pawn x10</label>
     <description>Etch ten Pawn-class identity chips for the Milian in one batch.</description>
@@ -103,7 +103,7 @@
   </RecipeDef>
 
   <!-- 职阶许可：骑士 x10 -->
-  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech,Ancot.MiliraRace">
     <defName>GNH_Recipe_NamePlate_Knight_Bulk</defName>
     <label>Etch Class Permit: Knight x10</label>
     <description>Etch ten Knight-class identity chips for the Milian in one batch.</description>
@@ -141,7 +141,7 @@
   </RecipeDef>
 
   <!-- 职阶许可：主教 x10 -->
-  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech,Ancot.MiliraRace">
     <defName>GNH_Recipe_NamePlate_Bishop_Bulk</defName>
     <label>Etch Class Permit: Bishop x10</label>
     <description>Etch ten Bishop-class identity chips for the Milian in one batch.</description>
@@ -179,7 +179,7 @@
   </RecipeDef>
 
   <!-- 职阶许可：战车 x10 -->
-  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech,Ancot.MiliraRace">
     <defName>GNH_Recipe_NamePlate_Rook_Bulk</defName>
     <label>Etch Class Permit: Rook x10</label>
     <description>Etch ten Rook-class identity chips for the Milian in one batch.</description>
@@ -219,7 +219,7 @@
   <!-- ═══════════ 太阳熔炉（x3 批量）═══════════ -->
 
   <!-- 职阶许可：国王 x3：单件 7000 → 批量 17500 -->
-  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech,Ancot.MiliraRace">
     <defName>GNH_Recipe_NamePlate_King_Bulk</defName>
     <label>Etch Class Permit: King x3</label>
     <description>Etch three King-class identity chips in the solar furnace in one batch.</description>
@@ -276,7 +276,7 @@
   </RecipeDef>
 
   <!-- 职阶许可：王后 x3 -->
-  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech">
+  <RecipeDef MayRequire="Ludeon.RimWorld.Biotech,Ancot.MiliraRace">
     <defName>GNH_Recipe_NamePlate_Queen_Bulk</defName>
     <label>Etch Class Permit: Queen x3</label>
     <description>Etch three Queen-class identity chips in the solar furnace in one batch.</description>

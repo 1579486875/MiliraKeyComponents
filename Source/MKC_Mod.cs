@@ -350,6 +350,10 @@ namespace MiliraKeyComponents
         /// </summary>
         internal static bool IsOurRecipe(RecipeDef recipe)
         {
+            // 配方本身可能是空的：Verse.Bill.GetWorkAmount 的 Postfix 会把它传进来，
+            // 而 Bill.recipe 在极少数情况下（例如别的模组造了个没有配方的 Bill）是 null。
+            // 这一句只花一次引用比较，却能让调用方少一层“万一”。
+            if (recipe == null) return false;
             if (recipe.defName == null) return false;
             if (!recipe.defName.StartsWith(RecipePrefix)) return false;
 

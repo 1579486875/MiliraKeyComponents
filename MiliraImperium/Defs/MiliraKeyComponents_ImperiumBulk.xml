@@ -22,7 +22,7 @@
        =============================================================== -->
 
   <!-- 灵能核心 x5：单件 6000 → 批量 25000 -->
-  <RecipeDef>
+  <RecipeDef MayRequire="Ariandel.MiliraImperium,Ancot.MiliraRace">
     <defName>GNH_Recipe_PsionicCore_Bulk</defName>
     <label>Weave Psionic Core x5</label>
     <description>Weave five Psionic Cores in the gravity loom in one batch.</description>
@@ -95,7 +95,7 @@
   </RecipeDef>
 
   <!-- 卡冈都亚核心 x3：单件 9000 → 批量 22500 -->
-  <RecipeDef>
+  <RecipeDef MayRequire="Ariandel.MiliraImperium,Ancot.MiliraRace">
     <defName>GNH_Recipe_GargantuaCore_Bulk</defName>
     <label>Weave Gargantua Core x3</label>
     <description>Weave three Gargantua Cores in the gravity loom in one batch.</description>
@@ -168,7 +168,7 @@
   </RecipeDef>
 
   <!-- 金色米莉拉之羽 x5：单件 6000 → 批量 25000 -->
-  <RecipeDef>
+  <RecipeDef MayRequire="Ariandel.MiliraImperium,Ancot.MiliraRace">
     <defName>GNH_Recipe_GoldenMiliraFeather_Bulk</defName>
     <label>Weave Golden Milira Feather x5</label>
     <description>Weave five Golden Milira Feathers in the gravity loom in one batch.</description>

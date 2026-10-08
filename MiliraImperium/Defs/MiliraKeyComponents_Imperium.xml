@@ -23,7 +23,7 @@
        材料：虚境凌晶 1 + 日凌晶 15 + 零素 10 + 暗物质 1 + 黄金 15 + 翡翠 10
        成本 ≈ 3305 银（市价 1500 银）
        前置：物质编织 (Milira_Imperium_MatterWeaving) -->
-  <RecipeDef>
+  <RecipeDef MayRequire="Ariandel.MiliraImperium,Ancot.MiliraRace">
     <defName>GNH_Recipe_PsionicCore</defName>
     <label>Weave Psionic Core</label>
     <description>Using a psionic-tuned spatial curvature array, weave a Psionic Core out of a Shroud Crystal, Solar Crystal, Neutronium, Dark Matter, Gold and Jade.</description>
@@ -99,7 +99,7 @@
        材料：灵能核心 1 + 零素 20 + 暗物质 3 + 日盘钢 15 + 黄金 15 + 翡翠 10
        成本 ≈ 4130 银（市价 1500 银）
        前置：暗物质约束 (Milira_Imperium_DarkMatterConstraint) -->
-  <RecipeDef>
+  <RecipeDef MayRequire="Ariandel.MiliraImperium,Ancot.MiliraRace">
     <defName>GNH_Recipe_GargantuaCore</defName>
     <label>Weave Gargantua Core</label>
     <description>Fold a Psionic Core into an ultra-microscopic black hole, casing the singularity in Neutronium, Dark Matter, Solar-Forged Steel, Gold and Jade.</description>
@@ -177,7 +177,7 @@
        材料：米莉拉之羽 20 + 虚境灵尘 1 + 黄金 30
        成本 ≈ 2040 银（市价 1500 银 —— 刻意更贵，避免变成印钞机）
        前置：灵能利刃 (Milira_ImperiumPsyBlade，虚境灵尘的研究) -->
-  <RecipeDef>
+  <RecipeDef MayRequire="Ariandel.MiliraImperium,Ancot.MiliraRace">
     <defName>GNH_Recipe_GoldenMiliraFeather</defName>
     <label>Weave Golden Milira Feather</label>
     <description>Infuse Milira feathers with Shroud ash and gold, weaving them into a Golden Milira Feather — the token the Imperium accepts in exchange for its rarest wares.</description>
