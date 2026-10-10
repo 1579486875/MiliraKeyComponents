@@ -356,7 +356,20 @@ namespace MiliraKeyComponents
             // 这一句只花一次引用比较，却能让调用方少一层“万一”。
             if (recipe == null) return false;
             if (recipe.defName == null) return false;
-            if (!recipe.defName.StartsWith(RecipePrefix)) return false;
+
+            // ⚠ 这里必须带 StringComparison.Ordinal，别把它当成可有可无的装饰。
+            //
+            //   StartsWith("...") 这种不指定比较方式的写法，默认走的是「当前区域性」
+            //   比较（culture-sensitive）：要先查语言区域规则，再逐字符比较，比 Ordinal
+            //   慢好几倍；而且个别语言（比如土耳其语）的大小写规则特殊，还可能出意外结果。
+            //
+            //   defName 是我们自己起的纯 ASCII 标识符（GNH_Recipe_xxx），既没有大小写歧义、
+            //   也不涉及任何语言规则，所以用 Ordinal（逐字节比）既最快又最准。
+            //
+            //   为什么这一句特别要紧：本方法被 MKC_VanillaBench 的 Harmony 补丁调用，
+            //   那个补丁挂在 Verse.Bill.GetWorkAmount 上 —— 每个 Bill 每次计算工时都会走一遍，
+            //   属于热路径，快一点是一点。
+            if (!recipe.defName.StartsWith(RecipePrefix, System.StringComparison.Ordinal)) return false;
 
             ModContentPack pack = recipe.modContentPack;
             if (pack == null) return false;   // 理论上不会为 null，这儿只是保险
@@ -366,13 +379,27 @@ namespace MiliraKeyComponents
         }
 
         /// <summary>
+        /// 筛选器「这条配方是不是本模组的」，**预先存成委托，只创建一次**。
+        ///
+        /// 为什么不直接写 .Where(IsOurRecipe)：
+        ///   把方法名直接当参数传进去（这叫「方法组」），编译器得现场造一个委托对象。
+        ///   新版 C# 编译器（C# 13 起）会自动替我们缓存一份，旧版不会 —— 也就是说
+        ///   「每次调用会不会新建一个委托」竟然取决于用哪个版本的编译器编。
+        ///   我们刚把 LangVersion 钉成 9.0，本来就是为了不让编出来的东西随 SDK 变，
+        ///   所以这里不依赖编译器的脾气，自己存一份，任何版本下都只建一个。
+        ///   （顺带说明：本方法只在应用/复查设置时调用，不是热路径，
+        ///     所以这么改是为了「确定性」，不是为了抠那点性能。）
+        /// </summary>
+        private static readonly System.Func<RecipeDef, bool> OurRecipeFilter = IsOurRecipe;
+
+        /// <summary>
         /// 把「当前这一批本模组的配方」整个收集出来。
         /// Apply 与 NeedsReapply 都调它 —— 两处各写一份 Where(IsOurRecipe).ToList()
         /// 看着一样，但将来筛子一变（比如再加一条判定），漏改一处就会出现
         /// 「应用的是一个集合、复查的是另一个集合」这种极难发现的错位。
         /// </summary>
         private static List<RecipeDef> CollectOurRecipes() =>
-            DefDatabase<RecipeDef>.AllDefsListForReading.Where(IsOurRecipe).ToList();
+            DefDatabase<RecipeDef>.AllDefsListForReading.Where(OurRecipeFilter).ToList();
 
         /// <summary>
         /// 一条配方的原始工作量在当前设置下应该是多少。
@@ -418,7 +445,10 @@ namespace MiliraKeyComponents
                     string sample = "";
                     foreach (RecipeDef r in DefDatabase<RecipeDef>.AllDefsListForReading)
                     {
-                        if (r.defName == null || !r.defName.StartsWith(RecipePrefix)) continue;
+                        // 与 IsOurRecipe 用同一把尺子：同样指定 Ordinal。
+                        // 这里不是热路径，但「同一个前缀在两处用不同比较方式」最容易在
+                        // 将来改动时漏掉一处，索性统一，省得以后对着两个写法猜哪个才对。
+                        if (r.defName == null || !r.defName.StartsWith(RecipePrefix, System.StringComparison.Ordinal)) continue;
                         byPrefix++;
                         if (sample.Length == 0)
                         {
