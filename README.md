@@ -76,7 +76,6 @@
 | 设置 | 说明 |
 |---|---|
 | **制作模式** | 平衡 / 简单。简单模式会进一步降低门槛 |
-| 数值调节 | 可以整体调整材料与工作量 |
 
 ---
 
@@ -212,7 +211,7 @@
 只装米莉拉本体就能用（15 条配方）；再装米帝拓展会自动解锁另外 6 条。
 
 - packageId：`gnh.cn.cys.milirakeycomponents`
-- 支持版本：1.6 ｜ 模组版本：**1.6.10**
+- 支持版本：1.6 ｜ 模组版本：**1.6.11**
 - 必需依赖：米莉拉天空精灵（`Ancot.MiliraRace`，工坊 3256974620）
 - 必需依赖：**Harmony**（`brrainz.harmony`，工坊 2009463077）—— **v1.6.7 起**，原因见下面的「原版工作台制作」
 - 可选依赖：米莉拉派系：米莉拉帝国（`Ariandel.MiliraImperium`，工坊 3588393755）
@@ -318,7 +317,7 @@
 
 ## ✦ 批量生产配方
 
-除「太阳熔炉炉心模型」这类一次性科技道具外，**每条单件配方都配了一个 `_Bulk` 批量版本**，玩法与原模组的「熔炼钢渣 x3」同类。
+除「太阳熔炉炉心模型」这类一次性科技道具外，**除「太阳熔炉炉心模型」以及国王/王后铭牌外，每条单件配方都配了一个 `_Bulk` 批量版本**，玩法与原模组的「熔炼钢渣 x3」同类。
 
 | 工作台 | 台面格数 | 批量倍率 | 原因 |
 |---|---:|---:|---|
@@ -548,7 +547,7 @@ public IEnumerable<IntVec3> IngredientStackCells => GenAdj.CellsOccupiedBy(this)
 ## 八、怎么确认生效
 
 - 装了米帝：建造 **米莉拉通用工作台**、**太阳熔炉**、**引力织造器**，
-  添加清单搜索「打印」「铸造」「织造」，应能看到 5 条配方
+  添加清单搜索「打印」「铸造」「织造」，应能看到 11 条配方
 - 只装本体：前两台工作台上应能看到「打印谐振子」「铸造太阳熔炉炉心模型」，
   且日志中**不会**出现 `GNH_Recipe_PsionicCore` 之类的缺失报错
 - 正常情况游戏日志（`Player.log`）里关于 `GNH_Recipe_` 的红字应为 0 条
@@ -559,7 +558,8 @@ public IEnumerable<IntVec3> IngredientStackCells => GenAdj.CellsOccupiedBy(this)
 
 改这两个文件即可，存盘后重进游戏生效：
 
-- `Defs\MiliraKeyComponents_Base.xml` —— 本体部分的 2 条配方
+- `Common\Defs\MiliraKeyComponents_Base.xml` —— 本体部分的 8 条配方
+- `Common\Defs\MiliraKeyComponents_Bulk.xml` —— 本体部分的 7 条批量配方
 - `MiliraImperium\Defs\MiliraKeyComponents_Imperium.xml` —— 米帝部分的 3 条配方
 
 可调项：`<count>`（材料量）、`<workAmount>`（工作量）、`<researchPrerequisite>`（研究前置）、
