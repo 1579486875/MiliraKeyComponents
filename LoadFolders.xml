@@ -14,7 +14,20 @@
              <li>/</li>      →  "/"                 （Path.Combine 判定它是根路径，
                                                      会把前半段整个丢掉，反而最危险）
          我们不去赌「带 \. 的路径在后续所有环节都等价」，而是把内容分门别类放进
-         Common / MiliraImperium 两个明确子文件夹 —— 最直观，也最不容易出岔子。 -->
+         Common / MiliraImperium 两个明确子文件夹 —— 最直观，也最不容易出岔子。
+
+         ⚠ 还有两条反编译确认的事实，正好都站在这个写法这一边：
+
+         ① 只要 LoadFolders.xml 的 <v1.6> 段有内容，InitLoadFolders 就会走
+            AddFolders(list) 然后**直接 return** —— 模组根目录**不会**被加进加载列表。
+            （只有完全没有 LoadFolders.xml 时，它才会另外把 RootDir 和 RootDir\Common 补进去。）
+            换句话说：写了这个文件之后，根目录下的 Defs / Patches / Languages / Assemblies
+            就都不再被扫描。本模组把内容全部放在 Common / MiliraImperium 里，正好避开这一点
+            —— 根目录下本来也没有这些文件夹，不会出现「以为会加载、其实没加载」。
+
+         ② Common 不是我们随便起的名字，而是 RimWorld 的官方约定名
+            （ModContentPack.CommonFolderName）。全库实测有 30 个模组采用 Common\Defs 结构。
+            用它等于跟着约定走，比自定义一个子文件夹名更稳妥。 -->
     <li>Common</li>
 
     <!-- 米帝扩展配方：仅在装了「米莉拉派系：米莉拉帝国」时加载。

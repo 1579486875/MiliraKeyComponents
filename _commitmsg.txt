@@ -1,0 +1,11 @@
+docs: v1.6.11 —— 修正 18 处文档/注释错误（数值一字未改）
+
+- README：配方数「11 条」→ 21 条；删去重复的排除句，并说明国王/王后确有批量版；
+- 8 处 Gold 注释算术错误：count 的单位是「10 个金」，旧值 N 实为 10N 个金；
+- 3 处批量工作量公式补「再把结果取整到易读值」；
+- Source 注释订正：Bill.GetWorkAmount 经反编译并非热路径（全程序集 3 个调用点，
+  全是 toil initAction）；删除无凭据的「50 万随机样本实测」，改为可复核的推导；
+- LoadFolders 注释补强：走 AddFolders(list) 后直接 return，模组根目录不再进入加载列表，
+  本模组把内容放在 Common/ + MiliraImperium/ 正好规避；Common 是官方约定名。
+
+验证：XML 解析后的规范化树与改前 5/5 完全一致；<count> 逐项相同；DLL 字节未变。

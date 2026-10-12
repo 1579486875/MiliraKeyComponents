@@ -195,8 +195,8 @@ namespace MiliraKeyComponents
         private const float MinWorkAmount = 1f;
 
         /// <summary>
-        /// 材料数量算出来的下限。**当前是冗余层：对任何输入都不改变结果**
-        ///（50 万随机样本实测，去掉它与保留它逐位相同）：
+        /// 材料数量算出来的下限。**当前是冗余层：对任何输入都不改变结果**。
+        /// 下面是分情况推理（覆盖全部输入，不是抽样统计）：
         /// c &gt; 0 时 Ceil(c * 0.5f) 已经 &gt;= 1，下限没参与；
         /// c &lt;= 0 时它把中间值抬成 1，又被外层 Mathf.Min 抹回 c。
         /// 保留它是为了将来调整 IngredientFactor 时有个显式的兜底位 —— 别误以为它现在真在起作用。
@@ -367,8 +367,10 @@ namespace MiliraKeyComponents
             //   也不涉及任何语言规则，所以用 Ordinal（逐字节比）既最快又最准。
             //
             //   为什么这一句特别要紧：本方法被 MKC_VanillaBench 的 Harmony 补丁调用，
-            //   那个补丁挂在 Verse.Bill.GetWorkAmount 上 —— 每个 Bill 每次计算工时都会走一遍，
-            //   属于热路径，快一点是一点。
+            //   那个补丁挂在 Verse.Bill.GetWorkAmount 上。反编译 1.6 实测：它当前**不是**热路径
+            //   —— 全程序集只有 3 个调用点，都是 toil 的 initAction，只在开始制作时各跑一次。
+            //   这里仍然坚持用 Ordinal，是为了防止将来原版把它挪进每 tick 的路径时，
+            //   这段比较悄悄变成性能隐患 —— 到时候不必再回来改一次。
             if (!recipe.defName.StartsWith(RecipePrefix, System.StringComparison.Ordinal)) return false;
 
             ModContentPack pack = recipe.modContentPack;
@@ -547,7 +549,8 @@ namespace MiliraKeyComponents
                     // 但要注意 work 可能是**负数**，那不是「没填」，而是游戏的一个约定：
                     // workAmount 小于 0 表示「工作量跟着产物走」（取产物的 WorkToMake 属性）。
                     // ExpectedWork 开头那句 originalWork <= 0f 的特判其实**是冗余的** ——
-                    // 外层 Mathf.Min 已经能把 0 / 负数兜回原值（50 万随机样本实测：带与不带逐位相同）。
+                    // 外层 Mathf.Min 已经能把 0 / 负数兜回原值：work <= 0 时
+                    // Max(1, work*0.2) 得 1，再被 Min(work, 1) 拉回 work 本身。
                     // 留着它单纯是为了让「负数跟产物走」的意图在代码里明摆着，
                     // 不必依赖 Mathf 的求值顺序去推。
                     // 不是简单模式就直接写回抄下来的原始值，也就是恢复成原来的样子。
