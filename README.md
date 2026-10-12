@@ -52,8 +52,15 @@
 
 ## 🎮 装好之后怎么用？
 
-**不用做任何事。** 配方会自动出现在对应的工作台上，
-和原版配方一样解锁、一样使用，不需要额外研究。
+**不用做任何事。** 配方会自动出现在对应的工作台上。
+
+⚠️ **但要先研究**：**21 条配方全部带研究前置**（`researchPrerequisite`），
+和原版的高级配方一样，对应的科技没解锁之前不会出现在制作列表里。
+研究前置各不相同（`Milira_UniversalPrinter`、`Milira_SunBlastFurnace_Build`、
+`Milira_Imperium_MatterWeaving` 等），清单见下方「配方明细」表。
+
+> 早先这里写的是「不需要额外研究」——**那句是错的**，
+> 与同一份文档下面 FAQ 里的「部分高级配方需要先研究」也自相矛盾。2026-10-12 订正。
 
 ### 在哪儿造？
 
@@ -88,7 +95,10 @@
 1. **前置都装了吗？** 尤其是**米莉拉种族** —— 没装的话配方不会出现。
 2. **工作台对吗？** 见上面那张表。用米莉拉自己的工作台最快。
 3. **材料够吗？** 配方要求的材料里有几个是米莉拉系特有的。
-4. **研究解锁了吗？** 部分高级配方需要先研究。
+4. **研究解锁了吗？** —— **这是最常见的原因**。21 条配方**全部**带研究前置，
+   科技没解锁就一条都不会出现（前置分别是 `Milira_UniversalPrinter`、
+   `Milira_SunBlastFurnace_Build`、`Milira_Imperium_MatterWeaving` 等，
+   见上方「配方明细」表）。
 
 ---
 
@@ -171,13 +181,29 @@
 
 ## 🧩 兼容性一览
 
+> **存档里到底写了什么**（2026-10-12 实测订正）
+>
+> 本模组的程序集含一个 `MiliraKeyComponents.MKC_GameComponent`（用来做设置界面与
+> `GetWorkAmount` 补丁的宿主）。RimWorld 把每个 `GameComponent` 的类型名写进存档，
+> 所以存档里会出现一行 `<li Class="MiliraKeyComponents.MKC_GameComponent" />`。
+>
+> 实测：37 个存档中，装载过本模组的存档里确实有这一行（`Autosave-2.rws` 等）；
+> 而 **21 条配方 defName（`GNH_Recipe_*`）在存档里出现 0 次** —— 配方本身不入档。
+>
+> **移除本模组后读档会怎样**：那行类型名找不到类，游戏会报 2 条
+> `Could not find class ...` 红字，然后**自动跳过并清理**（不会崩、不会坏档）。
+> 存档从此不再有这一行。
+>
+> ⚠️ 早先这里写的是「不写存档数据」/「不往存档里写任何数据」——
+> 那句话**不准确**（类型名确实会入档）。现在如实写明。
+
 | 项目 | 情况 |
 |---|---|
 | **RimWorld 版本** | 1.6 |
 | **必需前置** | Harmony、米莉拉种族（`Ancot.MiliraRace`） |
 | **可选前置** | 米莉拉帝国（`Ariandel.MiliraImperium`） |
 | **支持语言** | 简体中文 / 繁體中文 / English |
-| **存档安全** | ✅ 不写存档数据 |
+| **存档安全** | ✅ 加装 / 移除都不需要重开档；本模组会在存档里留一个**空的** `GameComponent` 占位（见下方说明） |
 | **冲突** | 无已知冲突 |
 | **缺可选前置时** | 对应配方整条跳过，不报错 |
 
@@ -211,7 +237,7 @@
 只装米莉拉本体就能用（15 条配方）；再装米帝拓展会自动解锁另外 6 条。
 
 - packageId：`gnh.cn.cys.milirakeycomponents`
-- 支持版本：1.6 ｜ 模组版本：**1.6.11**
+- 支持版本：1.6 ｜ 模组版本：**1.6.12**
 - 必需依赖：米莉拉天空精灵（`Ancot.MiliraRace`，工坊 3256974620）
 - 必需依赖：**Harmony**（`brrainz.harmony`，工坊 2009463077）—— **v1.6.7 起**，原因见下面的「原版工作台制作」
 - 可选依赖：米莉拉派系：米莉拉帝国（`Ariandel.MiliraImperium`，工坊 3588393755）
@@ -324,6 +350,32 @@
 
 > ⚠️ 程序集的存在理由不止设置界面：RimWorld 的模组设置界面由 `Mod.DoSettingsWindowContents` 提供、
 > 纯 XML 无法实现；v1.6.7 起还多了上面这个 Harmony 补丁。
+
+> ### ⚠️ 已知显示偏差：×2.5 时进度条不对（**实际工时是对的**）
+>
+> **先说结论**：用原版工作台制作时，**实际耗时确实是 2.5 倍**，
+> 完成判定、成品数量、材料消耗全部正确 —— 只有**进度条**和**配方配置窗口显示的工时**
+> 不对。这是原版 API 的边界，不是本模组的 bug，但会让人以为「怎么卡住了」。
+>
+> **根因**（反编译证据）：
+>
+> | 用途 | 走哪个方法 | 有没有 ×2.5 |
+> |---|---|---|
+> | 真正扣工时、判定完成 | `Verse.Toils_Recipe.<DoRecipeWork>b__0` → `bill.GetWorkAmount(thing)` | **有**（补丁挂在这里） |
+> | 进度条 | 同一个方法里的闭包 → `recipe.WorkAmountTotal(thing)` | **没有** |
+> | 配方配置窗口显示的基础工时 | `Dialog_BillConfig` / `RecipeDef.SpecialDisplayStats` → `WorkAmountTotal(null)` | **没有** |
+>
+> 关键在入参：`WorkAmountTotal(Thing)` 拿到的**只有产物**，拿不到「在哪张工作台上做」，
+> 而 ×2.5 恰恰取决于工作台 —— 所以那条路径天然算不出 2.5 倍。
+>
+> **表现**：
+> - 进度条前 **60%** 停在 0% 不动，之后 40% 才走满
+>   （进度按 `1 − 剩余/WorkAmountTotal` 算，初始 = `1 − 2.5W/W = −1.5`，被钳到 0）；
+> - 配方配置窗口写的基础工时比实际小 2.5 倍。
+>
+> **要不要修**：要彻底修得让「原版工作台用的配方」变成**另一批独立 defName 的配方**
+>（21 条变 42 条），那样 `WorkAmountTotal` 才会是各自正确的值。
+> 代价是配方数量翻倍、与上游 defName 的对应关系变复杂。**目前选择如实说明、不改设计。**
 
 ## ✦ 批量生产配方
 
@@ -588,7 +640,7 @@ public IEnumerable<IntVec3> IngredientStackCells => GenAdj.CellsOccupiedBy(this)
 ├── LoadFolders.xml                                    ← 条件加载规则
 ├── Common/                                            ← 总是加载（只需本体）
 │   ├── Assemblies/
-│   │   └── MiliraKeyComponents.dll                    ← 程序集（仅模组设置用）
+│   │   └── MiliraKeyComponents.dll                    ← 程序集（设置界面 + ×2.5 工时补丁）
 │   ├── Defs/
 │   │   ├── MiliraKeyComponents_Base.xml               ← 单件配方 8 条
 │   │   └── MiliraKeyComponents_Bulk.xml               ← 批量配方 7 条
@@ -603,9 +655,14 @@ public IEnumerable<IntVec3> IngredientStackCells => GenAdj.CellsOccupiedBy(this)
 │   │   ├── MiliraKeyComponents_Imperium.xml           ← 单件配方 3 条
 │   │   └── MiliraKeyComponents_ImperiumBulk.xml       ← 批量配方 3 条
 │   └── Languages/…（三语各两件）
-├── Source/
+├── Common/Textures/MKC/                               ← 模组图标（About.xml 的 modIconPath 指这里）
+│   ├── ModIcon.png
+│   └── ModIcon.dds.zstd
+├── Source/                                            ← ⚠ 以下只在 git 仓库里，不随发布 zip 分发
 │   ├── MiliraKeyComponents.csproj                     ← 编译配置（net48）
-│   └── MKC_Mod.cs                                     ← 设置界面 + 数值调节器
+│   ├── MKC_Mod.cs                                     ← 设置界面 + 数值调节器
+│   ├── MKC_VanillaBenchPatch.cs                       ← ×2.5 工时补丁（v1.6.7 起）
+│   └── AssemblyInfo.cs
 └── README.md
 ```
 

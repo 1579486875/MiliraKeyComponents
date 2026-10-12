@@ -7,7 +7,7 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <modVersion>1.6.11</modVersion>
+  <modVersion>1.6.12</modVersion>
   <modIconPath>MKC/ModIcon</modIconPath>
   <modDependencies>
     <li>
@@ -57,7 +57,9 @@
 
 ─────────────── 怎么用 ───────────────
 
-装进 Mods 目录、在游戏里启用即可，配方会自动出现，不需要先研究科技。
+装进 Mods 目录、在游戏里启用即可，配方会自动挂到对应工作台上。
+⚠ 但 21 条配方**全部有研究前置** —— 对应科技没解锁之前不会出现
+（与下方「能造什么」里的物品一一对应，具体前置见仓库 README 的配方明细表）。
 
 · 米莉拉自己的工作台：原速制作
 · 原版工作台：同样能造，但工作量 ×2.5
@@ -82,6 +84,7 @@
 前置依赖　　Harmony、米莉拉种族（Ancot.MiliraRace）
 可选依赖　　米莉拉帝国（Ariandel.MiliraImperium）—— 提供上面那 6 条配方
 作者　　　　大赢经直插白皮赢道
-存档影响　　不往存档里写任何数据 —— 加装或移除都不需要重开新档
+存档影响　　加装 / 移除都不需要重开新档（会在存档里留一行空的
+　　　　　　GameComponent 类型名；移除后读档会有 2 条红字，游戏自动跳过并清理，不崩不坏档）
 仓库与反馈　https://github.com/1579486875/MiliraKeyComponents</description>
 </ModMetaData>
