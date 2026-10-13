@@ -8,6 +8,16 @@
    目标框架：net48
      RimWorld 1.6 运行在 Unity 的 Mono（.NET Framework 4.8 兼容层）上，
      必须编译成 net48；用 .NET Core / 5+ 目标框架会导致游戏加载程序集失败。
+     ⚠ 关于 1.7（2026-10-13 实测补注：上面这条只对 1.6 成立）
+       1.7 已换成自研引擎 Waylith + .NET 10（CoreCLR），不再是 Unity/Mono，
+       所以「必须 net48」对 1.7 不适用。实测两条路都通：
+         · 现有 net48 产物在 1.7 上能直接加载 —— Assembly-CSharp 与 0Harmony
+           都是弱名称程序集（PublicKeyToken=null），版本号不参与绑定；
+           UnityEngine 的引用由引擎自动 remap 到 UnityStubs.dll。
+         · 做 1.7 原生版：本源码【零改动】即可编为 net10.0 —— 只改
+           TargetFramework 为 net10.0，并把 UnityEngine*.dll 的引用换成 1.7 安装
+           目录下的 UnityStubs.dll（实测 0 警告 0 错误）。
+       两版共用同一份源码，不必分叉。
 
    输出路径：..\Common\Assemblies\
      编译产物直接落到模组的 Common\Assemblies\ 目录
@@ -74,7 +84,12 @@
     <ManagedDir>$(RimWorldDir)\RimWorldWin64_Data\Managed</ManagedDir>
     <!-- 0Harmony.dll 不在游戏 Managed 目录里，它由 Harmony 模组提供。
          默认按本机的工坊路径去找；换机器时用 -p:HarmonyDir="...\Assemblies" 覆盖。 -->
-    <HarmonyDir Condition="'$(HarmonyDir)' == ''">D:\steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies</HarmonyDir>
+    <!-- 2026-10-13 修：原来只写了 Current\Assemblies，而工坊那份包里
+         只有 1.4/1.5/1.6/1.7 四个目录、没有 Current —— 于是默认路径永远不存在，
+         不显式传 -p:HarmonyDir= 就编不过。现按「1.6 优先 → Current → 1.7」依次探测。 -->
+    <HarmonyDir Condition="'$(HarmonyDir)' == '' AND Exists('D:\steam\steamapps\workshop\content\294100\2009463077\1.6\Assemblies\0Harmony.dll')">D:\steam\steamapps\workshop\content\294100\2009463077\1.6\Assemblies</HarmonyDir>
+    <HarmonyDir Condition="'$(HarmonyDir)' == '' AND Exists('D:\steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll')">D:\steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies</HarmonyDir>
+    <HarmonyDir Condition="'$(HarmonyDir)' == ''">D:\steam\steamapps\workshop\content\294100\2009463077\1.7\Assemblies</HarmonyDir>
   </PropertyGroup>
 
   <!-- 路径不存在时给中文报错，而不是让编译器抛一句难懂的找不到引用 -->
