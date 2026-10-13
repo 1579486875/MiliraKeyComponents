@@ -9,11 +9,22 @@
        加载内容与 1.6 完全相同。本模组的 Def / Patches 两版通用，
        写两份只会多一处需要同步的地方。
 
-       ⛔ 不要改成空段或另写一个内容不同的 v1.7 段：
-           空段会被精确命中，结果是 Common 与 MiliraImperium
-           一个都不加载，模组在 1.7 下直接变成空壳；
-           内容不同的段则等于把两版行为拆开维护。
-           真要按版本分内容时，才需要两个段各自写全。 -->
+       ⛔ 不要改成空段，也不要写「非空但不完整」的 v1.7 段 ——
+           两者后果一样严重，而且都属于「静默消失」：
+
+           · 空段：ModLoadFolders.LoadDataFromXmlCustom 对每个非注释子节点都会建 key
+             （即使它没有子节点），所以空的 v1.7 段会命中一把空 List；
+             而 InitLoadFolders 回落时「只判 null、不判空」→ AddFolders(空) → 直接 return。
+             本模组的 DLL 在 Common\Assemblies\ 里，于是连程序集都不会被加载 ——
+             游戏不报错、日志里也没有本模组，表现为「列表里显示正常、但什么都不做」。
+           · 非空但不完整（例如只写 Common、漏掉 MiliraImperium）：版本段是
+             【择一、不累加】的 —— 回落只会取中选的那一段，漏掉的项同样静默消失。
+           ⇒ 真要写 v1.7 段，必须把 v1.6 段的内容【整段复制】，一项都不能少。
+
+           （以上路径已反编译两版 InitLoadFolders 逐条核实，两版该方法哈希相同；
+            另注意：VersionControl.CurrentVersionString 是三段式如 "1.7.4976"，
+            而本文件的 key 是两段式 "1.6"/"1.7" —— 两者永远命中不了精确匹配，
+           所以总是走回落分支。） -->
   <v1.6>
     <!-- 基础部分：只依赖「米莉拉天空精灵」本体，任何情况下都加载。
 
@@ -35,6 +46,12 @@
          ① 只要 LoadFolders.xml 的 <v1.6> 段有内容，InitLoadFolders 就会走
             AddFolders(list) 然后**直接 return** —— 模组根目录**不会**被加进加载列表。
             （只有完全没有 LoadFolders.xml 时，它才会另外把 RootDir 和 RootDir\Common 补进去。）
+            ⚠ 2026-10-13 订正：上面这段描述在 1.6 下准确，但 1.7 下走的是
+            「回落」分支而不是第一分支 —— 因为版本段是三段式
+            （VersionControl 用 Major.Minor.Build，1.7 实为 "1.7.4976"），而本文件只有两段式
+            "1.6"/"1.7" 的 key，所以永远命中不了精确匹配。两条路径的结果相同：
+            都是 return 之后不再补 RootDir。详见版本段注释。
+
             换句话说：写了这个文件之后，根目录下的 Defs / Patches / Languages / Assemblies
             就都不再被扫描。本模组把内容全部放在 Common / MiliraImperium 里，正好避开这一点
             —— 根目录下本来也没有这些文件夹，不会出现「以为会加载、其实没加载」。
