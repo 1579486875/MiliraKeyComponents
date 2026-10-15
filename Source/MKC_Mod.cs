@@ -367,8 +367,17 @@ namespace MiliraKeyComponents
             //   也不涉及任何语言规则，所以用 Ordinal（逐字节比）既最快又最准。
             //
             //   为什么这一句特别要紧：本方法被 MKC_VanillaBench 的 Harmony 补丁调用，
-            //   那个补丁挂在 Verse.Bill.GetWorkAmount 上。反编译 1.6 实测：它当前**不是**热路径
-            //   —— 全程序集只有 3 个调用点，都是 toil 的 initAction，只在开始制作时各跑一次。
+            //   那个补丁挂在 RimWorld.Bill.GetWorkAmount 上（注意 Bill 在 RimWorld 命名空间，
+            //   不在 Verse 里）。2026-10-15 对 1.6 与 1.7 两个程序集各反编译复核过：
+            //   · 它当前**不是**热路径 —— 全程序集只有 3 个调用点：
+            //     ① Toils_Recipe.MakeUnfinishedThingIfNeeded() 里那个 toil 的 initAction；
+            //     ② Toils_Recipe.DoRecipeWork() 里那个 toil 的 initAction；
+            //     ③ Bill_Autonomous.GetWorkAmount() 里对 base 的那一次调用。
+            //     ①② 只在「开始制作」时各跑一次；③ 本身也只能由 ①② 间接触发。
+            //   · 同一条 toil 的 tickAction 并不调用它 —— 每 tick 扣工时用的是
+            //     JobDriver_DoBill.workLeft（见 DoRecipeWork 里 tickIntervalAction 的实现），
+            //     所以本补丁不会进入每 tick 的路径。
+            //   · 1.6 与 1.7 两版的 GetWorkAmount 方法体逐字节相同（反编译结果哈希一致）。
             //   这里仍然坚持用 Ordinal，是为了防止将来原版把它挪进每 tick 的路径时，
             //   这段比较悄悄变成性能隐患 —— 到时候不必再回来改一次。
             if (!recipe.defName.StartsWith(RecipePrefix, System.StringComparison.Ordinal)) return false;

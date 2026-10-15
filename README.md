@@ -4,7 +4,7 @@
 
 | 项目 | 说明 |
 |---|---|
-| **适用游戏版本** | RimWorld **1.6** |
+| **适用游戏版本** | RimWorld **1.6 / 1.7** |
 | **必需前置** | [Harmony](https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077)、**米莉拉种族**（`Ancot.MiliraRace`） |
 | **可选前置** | **米莉拉帝国**（`Ariandel.MiliraImperium`，用于帝国专属配方） |
 | **支持的语言** | **简体中文 / 繁體中文 / English** |
@@ -199,7 +199,7 @@
 
 | 项目 | 情况 |
 |---|---|
-| **RimWorld 版本** | 1.6 |
+| **RimWorld 版本** | 1.6 / 1.7 |
 | **必需前置** | Harmony、米莉拉种族（`Ancot.MiliraRace`） |
 | **可选前置** | 米莉拉帝国（`Ariandel.MiliraImperium`） |
 | **支持语言** | 简体中文 / 繁體中文 / English |
@@ -237,7 +237,7 @@
 只装米莉拉本体就能用（15 条配方）；再装米帝拓展会自动解锁另外 6 条。
 
 - packageId：`gnh.cn.cys.milirakeycomponents`
-- 支持版本：1.6 ｜ 模组版本：**1.6.12**
+- 支持版本：1.6 / 1.7 ｜ 模组版本：**1.6.13**
 - 必需依赖：米莉拉天空精灵（`Ancot.MiliraRace`，工坊 3256974620）
 - 必需依赖：**Harmony**（`brrainz.harmony`，工坊 2009463077）—— **v1.6.7 起**，原因见下面的「原版工作台制作」
 - 可选依赖：米莉拉派系：米莉拉帝国（`Ariandel.MiliraImperium`，工坊 3588393755）
@@ -585,7 +585,7 @@ public IEnumerable<IntVec3> IngredientStackCells => GenAdj.CellsOccupiedBy(this)
 | **配方之间形成循环依赖** | ✅ 唯一的产物间引用是「卡冈都亚核心 ← 灵能核心」，单向无环，不存在自锁 |
 | **经济套利（造出来卖给商人）** | ✅ 11 条配方的材料成本全部 **≥ 产物市场价格**，而商人收购价只有市价的 5~6 成 —— 卖了必亏 |
 | **游戏语言不是简中/繁中/英文** | ✅ 会回落到 `Defs` 内建的英文 label，不会出现空白文本 |
-| **游戏版本为 1.5** | ✅ `supportedVersions` 只声明 1.6，1.5 环境下不会加载 |
+| **游戏版本为 1.5** | ✅ `supportedVersions` 只声明 1.6 / 1.7，1.5 环境下不会加载 |
 | **产物被后续配方复用形成雪球** | ✅ 只有卡冈都亚核心消耗灵能核心，其余配方都吃基础材料，无滚雪球路径 |
 
 ### 引用来源分层（全 36 个引用）
