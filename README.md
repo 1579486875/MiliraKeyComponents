@@ -9,6 +9,7 @@
 | **可选前置** | **米莉拉帝国**（`Ariandel.MiliraImperium`，用于帝国专属配方） |
 | **支持的语言** | **简体中文 / 繁體中文 / English** |
 | **作者** | 大赢经直插白皮赢道 |
+| **AI 协作** | 代码由 AI 助手「DeepSeek娘·汐蓝」辅助编写；设计、需求、审阅与实机验证由作者完成 |
 | **仓库 / 问题反馈** | <https://github.com/1579486875/MiliraKeyComponents> |
 
 ---
