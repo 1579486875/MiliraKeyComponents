@@ -36,8 +36,13 @@
              <li>Common</li> →  …\ModName\Common   ← 干净明确，我们用它
              <li></li>       →  …\ModName\          （这才是「根目录」）
              <li>.</li>      →  …\ModName\.         （能用，但不规范）
-             <li>/</li>      →  "/"                 （Path.Combine 判定它是根路径，
-                                                     会把前半段整个丢掉，反而最危险）
+             <li>/</li>      →  …\ModName\          （ModLoadFolders.LoadDataFromXmlCustom
+                                                     对 "/" 与 "\" 有**提前特判**：直接把
+                                                     folderName 置成空串，效果等同根目录。
+                                                     所以它其实是合法的 —— 上一版注释写成
+                                                     「Path.Combine 会丢掉前半段、最危险」
+                                                     是错的：那条路径根本走不到。
+                                                     仍然推荐写 Common，因为更明确。）
          我们不去赌「带 \. 的路径在后续所有环节都等价」，而是把内容分门别类放进
          Common / MiliraImperium 两个明确子文件夹 —— 最直观，也最不容易出岔子。
 
