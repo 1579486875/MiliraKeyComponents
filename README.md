@@ -260,8 +260,11 @@
 
 > 基础部分放在 `Common` 这个明确子文件夹里，而不是用 `<li>.</li>` 表示根目录。
 > 原因是 `ModContentPack.InitLoadFolders` 内部按
-> `Path.Combine(RootDir, folderName)` 拼路径：写 `.` 会得到 `…\ModName\.` 这种不规范路径，
-> 写 `/` 反而会被 `Path.Combine` 判定成根路径、把模组目录整个丢掉。用明确子文件夹最直观也最稳。
+> `Path.Combine(RootDir, folderName)` 拼路径：写 `.` 会得到 `…\ModName\.` 这种不规范路径。
+> 而 `/` 与 `\` 其实是**合法**的 —— `Verse.ModLoadFolders.LoadDataFromXmlCustom` 在解析阶段就
+> 把它们特判成 `folderName = ""`（效果等同根目录），**根本走不到** `Path.Combine` 的
+> 「第二段是根路径」分支。三种写法都合法，推荐 `Common` 只是因为它最直观。
+> 详见文末「开发与构建」一节的对照表。
 >
 > 还有两条反编译确认的事实，也都支持这个写法：
 >
@@ -589,12 +592,12 @@ public IEnumerable<IntVec3> IngredientStackCells => GenAdj.CellsOccupiedBy(this)
 | **游戏版本为 1.5** | ✅ `supportedVersions` 只声明 1.6 / 1.7，1.5 环境下不会加载 |
 | **产物被后续配方复用形成雪球** | ✅ 只有卡冈都亚核心消耗灵能核心，其余配方都吃基础材料，无滚雪球路径 |
 
-### 引用来源分层（全 36 个引用）
+### 引用来源分层（全 31 个引用）
 
 | 来源 | 数量 | 加载条件 |
 |---|---:|---|
-| 原版 `Data` | 7 | 无条件 |
-| 本体无条件主模块 | 12 | 无条件 |
+| 原版 `Data` | 5 | 无条件（`ComponentIndustrial` / `ComponentSpacer` / `Gold` / `Jade` / `Plasteel`） |
+| 本体无条件主模块 | 9 | 无条件 |
 | 本体 Biotech 子模块 | 6 | 条件 = Biotech（本体强制依赖 + 本模组 MayRequire 兜底） |
 | 米帝无条件主模块 | 11 | 无条件（装了米帝时） |
 ## 七、安装
@@ -619,11 +622,12 @@ public IEnumerable<IntVec3> IngredientStackCells => GenAdj.CellsOccupiedBy(this)
 
 ## 九、想调整
 
-改这两个文件即可，存盘后重进游戏生效：
+改这四个文件即可，存盘后重进游戏生效：
 
 - `Common\Defs\MiliraKeyComponents_Base.xml` —— 本体部分的 8 条配方
 - `Common\Defs\MiliraKeyComponents_Bulk.xml` —— 本体部分的 7 条批量配方
 - `MiliraImperium\Defs\MiliraKeyComponents_Imperium.xml` —— 米帝部分的 3 条配方
+- `MiliraImperium\Defs\MiliraKeyComponents_ImperiumBulk.xml` —— 米帝部分的批量配方
 
 可调项：`<count>`（材料量）、`<workAmount>`（工作量）、`<researchPrerequisite>`（研究前置）、
 `<recipeUsers>`（工作台）。
@@ -670,10 +674,31 @@ public IEnumerable<IntVec3> IngredientStackCells => GenAdj.CellsOccupiedBy(this)
 > 编译：`dotnet build "Source\MiliraKeyComponents.csproj" -c Release -p:RimWorldDir="<RimWorld 目录>"`
 > 产物自动落到 `Common\Assemblies\`——**必须放在 LoadFolders 列出的文件夹下**，否则不会被加载。
 
-> ⚠️ `LoadFolders.xml` 里**不要**用 `<li>.</li>` 表示根目录，改用显式的子文件夹名（本模组用 `Common`）。
-> 反编译 `ModContentPack.InitLoadFolders` 可见，它按 `Path.Combine(RootDir, folderName)` 拼路径：
-> 写 `.` 会得到 `…\ModName\.` 这种不规范路径；而写 `/` 更糟 —— `Path.Combine` 会判定它是根路径、
-> 把模组目录整个丢掉。用明确的子文件夹既直观，又不会踩这两个坑。
+> ⚠️ `LoadFolders.xml` 里表示根目录有三种写法，**都合法**，但推荐用显式子文件夹（本模组用 `Common`）。
+> 反编译 `Verse.ModLoadFolders.LoadDataFromXmlCustom` 原文：
+>
+> ```csharp
+> if (childNode2.InnerText == "/" || childNode2.InnerText == "\\")
+> {
+>     foldersForVersion[text].Add(new LoadFolder("", requiredAnyOfPackageIds, requiredAllOfPackageIds, disallowedAnyOfPackageIds));
+>     continue;
+> }
+> ```
+>
+> 也就是说 `/` 与 `\` 在解析阶段就被**提前特判**成 `folderName = ""`，
+> 效果等同根目录；它**根本走不到** `Path.Combine` 的「第二段是根路径」分支。
+> 三种写法的实际结果：
+>
+> | 写法 | folderName | 拼出来的路径 |
+> |---|---|---|
+> | `<li>Common</li>` | `Common` | `…\ModName\Common` ← 推荐，最明确 |
+> | `<li>/</li>` 或 `<li>\</li>` | `""`（特判） | `…\ModName\` ← 合法 |
+> | `<li>.</li>` | `.` | `…\ModName\.` ← 能用，但不规范 |
+> | `<li></li>`（空元素） | `""`（`InnerText` 为空） | `…\ModName\` ← 合法但含义不直观 |
+>
+> ⚠️ **上一版这里写「写 `/` 会把模组目录整个丢掉」是错的** —— 那条路径走不到，
+> 详情见 `LoadFolders.xml` 里的 2026-10-13 订正注释。
+> 仍然推荐写 `Common`：不是为了绕开不存在的 bug，而是因为它最直观。
 
 ---
 
