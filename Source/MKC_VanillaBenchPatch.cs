@@ -146,7 +146,7 @@ namespace MiliraKeyComponents
                     //「说好的延长呢」变成玩家眼里的悬案，却没有任何线索。
                     // 注意：本方法只由 [StaticConstructorOnStartup] 调用一次，
                     // 所以并不存在「下次再试」；不置位只是为了别留下「已经装过」的假象。
-                    Log.Error("[MKC] Could not find Verse.Bill.GetWorkAmount; "
+                    Log.Error("[MKC] Could not find RimWorld.Bill.GetWorkAmount; "
                         + "the vanilla-workbench work penalty is NOT active this session.");
                     return;
                 }
@@ -171,7 +171,7 @@ namespace MiliraKeyComponents
         }
 
         /// <summary>
-        /// 挂在 Verse.Bill.GetWorkAmount 上的后置补丁。
+        /// 挂在 RimWorld.Bill.GetWorkAmount 上的后置补丁。
         ///
         /// Harmony 按参数名把东西注入进来：
         ///   __instance —— 被补的那个对象本身（这里就是那个 Bill）

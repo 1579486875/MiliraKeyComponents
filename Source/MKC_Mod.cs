@@ -353,12 +353,12 @@ namespace MiliraKeyComponents
         ///
         /// 用 internal 而不是 private：MKC_VanillaBench 那个 Harmony 补丁也要用它
         ///（那个类写在 MKC_VanillaBenchPatch.cs 里 —— 类名与文件名不一样，别找错）。
-        /// 那个补丁挂在 Verse.Bill.GetWorkAmount 上，而那个方法是**所有**配方共用的，
+        /// 那个补丁挂在 RimWorld.Bill.GetWorkAmount 上，而那个方法是**所有**配方共用的，
         /// 必须靠这个方法把「本模组的配方」从原版与第三方配方里筛出来。
         /// </summary>
         internal static bool IsOurRecipe(RecipeDef recipe)
         {
-            // 配方本身可能是空的：Verse.Bill.GetWorkAmount 的 Postfix 会把它传进来，
+            // 配方本身可能是空的：RimWorld.Bill.GetWorkAmount 的 Postfix 会把它传进来，
             // 而 Bill.recipe 在极少数情况下（例如别的模组造了个没有配方的 Bill）是 null。
             // 这一句只花一次引用比较，却能让调用方少一层“万一”。
             if (recipe == null) return false;
