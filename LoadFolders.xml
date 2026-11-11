@@ -22,7 +22,7 @@
            ⇒ 真要写 v1.7 段，必须把 v1.6 段的内容【整段复制】，一项都不能少。
 
            （以上路径已反编译两版 InitLoadFolders 逐条核实，两版该方法哈希相同；
-            另注意：VersionControl.CurrentVersionString 是三段式如 "1.7.4976"，
+            另注意：VersionControl.CurrentVersionString 是三段式如 "1.7.5005"，
             而本文件的 key 是两段式 "1.6"/"1.7" —— 两者永远命中不了精确匹配，
            所以总是走回落分支。） -->
   <v1.6>
@@ -53,7 +53,7 @@
             （只有完全没有 LoadFolders.xml 时，它才会另外把 RootDir 和 RootDir\Common 补进去。）
             ⚠ 2026-10-13 订正：上面这段描述在 1.6 下准确，但 1.7 下走的是
             「回落」分支而不是第一分支 —— 因为版本段是三段式
-            （VersionControl 用 Major.Minor.Build，1.7 实为 "1.7.4976"），而本文件只有两段式
+            （VersionControl 用 Major.Minor.Build，1.7 实为 "1.7.5005"），而本文件只有两段式
             "1.6"/"1.7" 的 key，所以永远命中不了精确匹配。两条路径的结果相同：
             都是 return 之后不再补 RootDir。详见版本段注释。
 

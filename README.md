@@ -581,8 +581,8 @@ public IEnumerable<IntVec3> IngredientStackCells => GenAdj.CellsOccupiedBy(this)
 
 | 极端场景假设 | 验证结果 |
 |---|---|
-| **只装米莉拉本体（无米帝）** | ✅ Base 组 8 条配方的 23 个引用**全部**来自本体无条件主模块 + 原版 |
-| **本体 + 米帝，但无 Odyssey / Ideology / Anomaly** | ✅ Imperium 组引用的 18 个 Def 全在米帝**无条件主模块**，不受条件子模块影响 |
+| **只装米莉拉本体（无米帝）** | ✅ Base 组 8 条配方引用的 **19 个** Def（去重后）**全部**来自本体无条件主模块 + 原版 |
+| **本体 + 米帝，但无 Odyssey / Ideology / Anomaly** | ✅ Imperium 组引用的 **16 个** Def（去重后）全在米帝**无条件主模块**，不受条件子模块影响 |
 | **未安装 Biotech DLC** | ⚠️→✅ 6 种职阶许可定义在本体的 `1.6\Mods\Biotech\` 条件模块里。本体虽在 `About.xml` 强制依赖 Biotech，但这 6 条配方仍显式标注 `MayRequire="Ludeon.RimWorld.Biotech"` 兜底：缺失时**静默跳过**，而不是抛红字 |
 | **旧版本模组目录/标识残留** | ✅ 已扫描：全库只有一个 `gnh.cn.cys.milirakeycomponents`。2026-10-01 按作者签名（GNH-CN-CYS）把 `taml.` / `TAML_` 统一改为 `gnh.cn.cys.` / `GNH_`，旧目录已清除，不会重复定义；改前的副本已在本地留存备份 |
 | **加载顺序被排到本体/米帝之前** | ✅ `About.xml` 已声明 `loadAfter`；且 RimWorld 的 Def 加载是两阶段（先收集再 ResolveReferences），跨模组引用本身不依赖顺序 |
